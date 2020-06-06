@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>super video</title>
+    <style>
+      html,body {
+        width: 100%;
+        height: 100%;
+      }
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #videoContainer {
+        width: 496px;
+        height: 280px;
+      }
+    </style>
+  <link href="css/main-css.css" rel="stylesheet"></head>
+  <body>
+    <noscript>
+      <strong>We're sorry but soucecode doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="videoContainer"></div>
+    <!-- built files will be auto injected -->
+  <script type="text/javascript" src="superVideo.js"></script></body>
+  <script>
+    // https://www.w3school.com.cn/i/movie.ogg
+   const video = new Super.Svideo('videoContainer', {
+    //  source: 'https://www.w3school.com.cn/i/movie.ogg'
+      source: new Super.VideoSource({
+        src: 'https://vdept.bdstatic.com/6c3936565a4755674d786a566d624847/5677596d446e6574/254dfe9f93f81c4e3d2d60a60b114372c373b5dff134b29be877d6cb1a717df644731cc6319189f03b2fc6f2132bed19.mp4?auth_key=1591450206-0-0-b6be7acafc7dd58cdc70e78b8c34ba08'
+      })
+   })
+   video.addEventListener('onchange', (event) => {
+    //  console.log(event)
+   })
+  </script>
+</html>
