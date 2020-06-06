@@ -81,6 +81,7 @@ class Videopc extends Target {
     controlRight.className='sv-control-r'
     control.appendChild(controlRight)
     const muteMenu = this.muteMenu_ = document.createElement('button')
+    muteMenu.className = 'showMute'
     controlRight.appendChild(muteMenu)
     const muteInner = this.muteInner_ = document.createElement('span')
     muteInner.innerHTML = '&#xe753;'
@@ -91,13 +92,78 @@ class Videopc extends Target {
     const mutePanel = this.mutePanel_ = document.createElement('div')
     mutePanel.className = 'sv-mutePanel hide'
     muteMenu.appendChild(mutePanel)
+    // mute num
+    const muteNum = this.muteNum_ = document.createElement('div')
+    muteNum.className = 'sv-mute-num'
+    muteNum.innerHTML = '100'
+    // mute slider
+    const muteSlider = this.muteSlider_ = document.createElement('div')
+    muteSlider.className = 'sv-mute-slider'
+    mutePanel.appendChild(muteNum)
+    mutePanel.appendChild(muteSlider)
+    // mute slider button
+    const muteSliderRange = this.muteSliderRange_ = document.createElement('div')
+    muteSliderRange.className = 'sv-mute-sliderRange'
+    muteSlider.appendChild(muteSliderRange)
+    const muteSliderButton = this.muteSliderButton_ = document.createElement('button')
+    muteSliderButton.className = 'sv-mute-button'
+    muteSlider.appendChild(muteSliderButton)
+    // 进度条
+    const progressBar = this.progressBar_ = document.createElement('div')
+    progressBar.className = 'sv-progressBar'
+    control.appendChild(progressBar)
+    const cacheProgress = this.cacheProgress_ = document.createElement('div')
+    cacheProgress.className = 'sv-cacheProgress'
+    progressBar.appendChild(cacheProgress)
+    const progressNum = this.progressNum_ = document.createElement('div')
+    progressNum.className = 'sv-progressNum'
+    progressBar.appendChild(progressNum)
+    // 音量调节
+    this.sliderRange_(muteSliderButton, muteSliderRange)
+    this.setVolume_(this.option.volume)
+    // 判断是否静音
+    this.setMuteIcon_()
 
     // 显示音量调节控件
-    muteMenu.onmousemove = () => {
+    muteMenu.onmouseover = () => {
       mutePanel.classList.remove('hide')
     }
+    let timerMute = null
     muteMenu.onmouseleave = () => {
-      mutePanel.classList.add('hide')
+      timerMute = setTimeout(() => {
+        mutePanel.classList.add('hide')
+        clearTimeout(timerMute)
+      }, 1500)
+    }
+
+    mutePanel.onmouseover = () => {
+      mutePanel.classList.remove('hide')
+      clearTimeout(timerMute)
+    }
+    mutePanel.onmouseleave = () => {
+      mutePanel.classList.remove('hide')
+    }
+
+    // 点击按钮静音
+    muteMenu.onclick = (event) => {
+      if (this.isMuted_()) {
+        this.setMuted_(false)
+      } else {
+        this.setMuted_(true)
+      }
+      event.stopPropagation()
+    }
+
+    mutePanel.onclick = (event) => {
+      event.stopPropagation()
+    }
+
+    // 进度条事件处理
+    progressBar.onmouseover = () => {
+      progressBar.style.height = '4px'
+    }
+    progressBar.onmouseleave = () => {
+      progressBar.style.height = '2px'
     }
 
 
@@ -125,6 +191,48 @@ class Videopc extends Target {
 
   /**
    * @private
+   * @description 滑块事件
+   *
+   * @param {*} cursor
+   * @param {*} mask
+   * @memberof Videopc
+   */
+  sliderRange_ (cursor, mask) {
+    cursor.onmousedown = (evf) => {
+      this._isCursor = true
+      // event的兼容性
+      let evF = evf||event
+      // 获取鼠标按下的坐标
+      let y1 = evF.clientY
+      //获取元素的left，top值
+      let t = cursor.offsetTop
+      // 给可视区域添加鼠标的移动事件
+      document.onmousemove = (ev) => {
+      // 获取鼠标移动时的坐标
+        let y2 = ev.clientY
+        // 计算出鼠标的移动距离
+        let y = y2-y1
+        // 移动的数值与元素的left，top相加，得出元素的移动的距离
+        let lt = y+t
+        // 更改元素的left，top值
+        if (lt > 50 || lt < 0) {
+          return
+        }
+        cursor.style.top = `${lt}px`
+        let maskH = 50 - lt
+        mask.style.height = `${maskH}px`
+        this.setVolume_(maskH/50)
+      }
+      //清除
+      document.onmouseup = () => {
+        document.onmousemove = null
+        this._isCursor = false
+      }
+    }
+  }
+
+  /**
+   * @private
    * @description 添加资源
    * @memberof Videopc
    */
@@ -143,6 +251,28 @@ class Videopc extends Target {
       }
       // 获取当前播放时长
       this.timeStart_.innerHTML = formatSeconds(this.getCurrentTime_())
+      // 判断是否静音
+      this.setMuteIcon_()
+      // 进度条数据
+      const bufferEnd = video.buffered.end(0)
+      const allTime = this.getAllTime_()
+      const nowTime = this.getCurrentTime_()
+      this.cacheProgress_.style.width = `${bufferEnd/allTime * 100}%`
+      this.progressNum_.style.width = `${nowTime/allTime * 100}%`
+    }
+  }
+
+  /**
+   * @description 设置声音图标状态
+   *
+   * @memberof Videopc
+   */
+  setMuteIcon_ () {
+    // 判断是否静音
+    if (this.isMuted_()) {
+      this.muteInner_.innerHTML = '&#xe63e;'
+    } else {
+      this.muteInner_.innerHTML = '&#xe753;'
     }
   }
 
@@ -225,6 +355,7 @@ class Videopc extends Target {
    */
   setMuted_ (bol = true) {
     this.video_.muted = bol
+    this.setMuteIcon_()
   }
 
   /**
@@ -295,6 +426,14 @@ class Videopc extends Target {
    */
   setVolume_ (num = 1) {
     this.video_.volume = num
+    this.muteNum_.innerHTML = parseInt(num * 100)
+    this.muteSliderRange_.style.height = `${num * 100/2}px`
+    this.muteSliderButton_.style.top = `${50 - num * 100/2}px`
+    if (num > 0) {
+      this.setMuted_(false)
+    } else {
+      this.setMuted_(true)
+    }
   }
 
   /**
@@ -302,7 +441,7 @@ class Videopc extends Target {
    *
    * @memberof Videopc
    */
-  getVolume_ (num = 1) {
+  getVolume_ () {
     return this.video_.volume
   }
 
