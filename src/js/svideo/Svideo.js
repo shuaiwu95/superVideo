@@ -155,6 +155,26 @@ class Svideo extends Target{
   }
 
   /**
+   * @description 设置播放进度
+   *
+   * @param {Number} time 秒
+   * @memberof Svideo
+   */
+  setCurrentTime (time) {
+    this.video_.setCurrentTime_(time)
+  }
+
+  /**
+   * @description 视频是否准备就绪
+   *
+   * @returns
+   * @memberof Svideo
+   */
+  isReady () {
+    return this.video_.isReady_()
+  }
+
+  /**
    * @description 视频是否播放结束
    *
    * @returns

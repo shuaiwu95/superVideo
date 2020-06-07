@@ -165,6 +165,25 @@
     background-color: #00a1d6;
 }
 
+.sv-progressBtn {
+    position: absolute;
+    left: 0%;
+    top: -7px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: rgba(0, 161, 214, 0.5);
+    cursor: pointer;
+}
+.sv-progressBtn>div {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00a1d6;
+    margin-top: 2.6px;
+    margin-left: 2.8px;
+}
+
 .hide {
     display: none;
 }

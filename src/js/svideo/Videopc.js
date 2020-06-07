@@ -118,6 +118,11 @@ class Videopc extends Target {
     const progressNum = this.progressNum_ = document.createElement('div')
     progressNum.className = 'sv-progressNum'
     progressBar.appendChild(progressNum)
+    const progressBtn = this.progressBtn_ = document.createElement('div')
+    progressBtn.className = 'sv-progressBtn hide'
+    const progressBtnInside = document.createElement('div')
+    progressBtn.appendChild(progressBtnInside)
+    progressBar.appendChild(progressBtn)
     // 音量调节
     this.sliderRange_(muteSliderButton, muteSliderRange)
     this.setVolume_(this.option.volume)
@@ -161,9 +166,44 @@ class Videopc extends Target {
     // 进度条事件处理
     progressBar.onmouseover = () => {
       progressBar.style.height = '4px'
+      progressBtn.classList.remove('hide')
     }
     progressBar.onmouseleave = () => {
       progressBar.style.height = '2px'
+      progressBtn.classList.add('hide')
+    }
+
+    progressBar.onclick = (event) => {
+      let x = event.clientX
+      const time = this.getCurrentByPx_(x - 12)
+      this.setCurrentTime_(time)
+    }
+
+    // 控制进度条按钮
+    let progressBarLen = progressBar.clientWidth
+    progressBar.onmouseover = () => {
+      progressBar.style.height = '4px'
+      progressBtn.classList.remove('hide')
+      progressBar.onmousedown = () => {
+        // 获取鼠标按下的坐标
+        let l = progressBar.offsetLeft
+        document.onmousemove = (ev) => {
+          // 获取鼠标移动时的坐标
+          let x2 = ev.clientX
+          if (x2 < 12 || x2 > progressBarLen) {
+            return
+          }
+          progressBtn.style.left = `${x2 - 12}px`
+          const progressLen = parseInt(((x2-12)/(progressBarLen - 12)).toFixed(2) * 100)/100
+          const time = this.getCurrentByPx_(progressBarLen * progressLen)
+          this.setCurrentTime_(time)
+        }
+        document.onmouseup = () => {
+          document.onmousemove = null
+          document.onmouseup = null
+          progressBtn.classList.add('hide')
+        }
+      }
     }
 
 
@@ -211,9 +251,9 @@ class Videopc extends Target {
       // 获取鼠标移动时的坐标
         let y2 = ev.clientY
         // 计算出鼠标的移动距离
-        let y = y2-y1
+        let y = y2 - y1
         // 移动的数值与元素的left，top相加，得出元素的移动的距离
-        let lt = y+t
+        let lt = y + t
         // 更改元素的left，top值
         if (lt > 50 || lt < 0) {
           return
@@ -226,6 +266,7 @@ class Videopc extends Target {
       //清除
       document.onmouseup = () => {
         document.onmousemove = null
+        document.onmouseup = null
         this._isCursor = false
       }
     }
@@ -259,6 +300,10 @@ class Videopc extends Target {
       const nowTime = this.getCurrentTime_()
       this.cacheProgress_.style.width = `${bufferEnd/allTime * 100}%`
       this.progressNum_.style.width = `${nowTime/allTime * 100}%`
+      const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
+      if (this.isReady_()) {
+        this.progressBtn_.style.left = `${btnLen - 12}px`
+      }
     }
   }
 
@@ -315,6 +360,33 @@ class Videopc extends Target {
    */
   getCurrentTime_ () {
     return this.video_.currentTime
+  }
+
+  /**
+   * @description 设置播放进度
+   *
+   * @param {*} time
+   * @memberof Videopc
+   */
+  setCurrentTime_ (time) {
+    this.video_.currentTime = time
+    const allTime = this.getAllTime_()
+    const nowTime = time
+    const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
+    if (this.isReady_()) {
+      this.progressBtn_.style.left = `${btnLen - 12}px`
+    }
+  }
+
+  /**
+   * @description 将像素长度转为播放时长
+   *
+   * @memberof Videopc
+   */
+  getCurrentByPx_ (px) {
+    const allTime = this.getAllTime_()
+    const prossBarLen = this.progressBar_.clientWidth
+    return allTime * (px/prossBarLen)
   }
 
   /**
@@ -443,6 +515,16 @@ class Videopc extends Target {
    */
   getVolume_ () {
     return this.video_.volume
+  }
+
+  /**
+   * @description 是否就绪
+   *
+   * @returns
+   * @memberof Videopc
+   */
+  isReady_ () {
+    return this.video_.readyState === 4
   }
 
 }
