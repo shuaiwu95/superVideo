@@ -1,0 +1,15 @@
+.sv-el-control-style {
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.sv-nextBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-align: inherit;
+}

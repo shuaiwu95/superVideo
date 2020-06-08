@@ -1,18 +1,37 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1867770 */
-    src: url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.eot');
-    src: url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.eot?#iefix') format('embedded-opentype'),
-    url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.woff') format('woff'),
-    url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.ttf') format('truetype'),
-    url('https://at.alicdn.com/t/font_1867770_jaot8uwo3g.svg#iconfont') format('svg');
-  }
+    src: url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.eot');
+    src: url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.eot?#iefix') format('embedded-opentype'),
+    url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.woff') format('woff'),
+    url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.ttf') format('truetype'),
+    url('https://at.alicdn.com/t/font_1867770_e5xvhrhd3vj.svg#iconfont') format('svg');
+}
+
+.sv-target video {
+    background-color: #000000;
+}
 
 .sv-font {
     font-family: 'iconfont';
 }
 
 .sv-play {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.sv-next {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.sv-fullScreen {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.sv-cancelFull {
     color: #ffffff;
     font-size: 20px;
 }
@@ -46,7 +65,7 @@
     padding-left: 10px;
     padding-right: 10px;
 }
-.sv-play-container button {
+.sv-play-container button.sv-playBtn {
     background: none;
     border: none;
     cursor: pointer;
@@ -186,4 +205,26 @@
 
 .hide {
     display: none;
+}
+
+.sv-full-screen {
+    position: fixed!important;
+    width: 100%!important;
+    height: 100%!important;
+    left: 0!important;
+    top: 0!important;
+}.sv-el-control-style {
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.sv-nextBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-align: inherit;
 }

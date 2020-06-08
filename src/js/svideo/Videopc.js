@@ -2,6 +2,14 @@ import Target from '../events/Target'
 import { formatSeconds } from '../util/formatTime'
 import '../../css/videoControl-pc.css'
 
+/**
+ * @classdesc
+ * PC端视频渲染引擎
+ * 内置了大多数视频相关函数
+ * MB端继承此类大部分方法属性
+ * @class Videopc
+ * @extends {Target}
+ */
 class Videopc extends Target {
   constructor (videopcOption = {}) {
     const defaultOption = {
@@ -37,6 +45,20 @@ class Videopc extends Target {
     targetElement.appendChild(video)
     this.addSource_()
     this.createControlContainer_(targetElement)
+
+    // add defaault control
+    const leftControls = this.option.leftControls
+    const rightControls = this.option.rightControls
+    if (leftControls.length > 0) {
+      leftControls.forEach(item => {
+        this.addControlLeft_(item)
+      })
+    }
+    if (rightControls.length > 0) {
+      rightControls.forEach(item => {
+        this.addControlRight_(item)
+      })
+    }
   }
 
   /**
@@ -54,11 +76,16 @@ class Videopc extends Target {
     control.appendChild(playContainer)
     // playMenu
     const playMenu = this.playMenu_ = document.createElement('button')
+    playMenu.className = 'sv-playBtn'
     playContainer.appendChild(playMenu)
     const btnInner = this.btnInner_ = document.createElement('span')
     btnInner.innerHTML = '&#xe60f;'
     btnInner.className = 'sv-font sv-play'
     playMenu.appendChild(btnInner)
+    // left control
+    const controlLeft_ = this.leftControl_ = document.createElement('div')
+    controlLeft_.className = 'sv-control-left'
+    playContainer.appendChild(controlLeft_)
     // time
     const timeRang = document.createElement('div')
     timeRang.className = 'sv-time'
@@ -128,6 +155,42 @@ class Videopc extends Target {
     this.setVolume_(this.option.volume)
     // 判断是否静音
     this.setMuteIcon_()
+    // 为默认控件设置事件
+    this.setEventDefaultControl_()
+
+
+    // 获取视频总时长
+    const timer = setInterval(() => {
+      if (this.video_.readyState) {
+        timeEnd.innerHTML = formatSeconds(this.getAllTime_())
+        this.onready_()
+        clearInterval(timer)
+      }
+    })
+
+    // 点击播放 | 暂停
+    playMenu.onclick = () => {
+      const isPlay = this.isPlay_()
+      if (isPlay) { // 在播放
+        this.pause_()
+        btnInner.innerHTML = '&#xe60f;'
+      } else { // 已暂停
+        this.play_()
+        btnInner.innerHTML = '&#xe693;'
+      }
+    }
+  }
+
+  /**
+   * @description 为默认控件绑定事件
+   *
+   * @memberof Videopc
+   */
+  setEventDefaultControl_ () {
+    const muteMenu = this.muteMenu_
+    const mutePanel = this.mutePanel_
+    const progressBar = this.progressBar_
+    const progressBtn = this.progressBtn_
 
     // 显示音量调节控件
     muteMenu.onmouseover = () => {
@@ -203,28 +266,6 @@ class Videopc extends Target {
           document.onmouseup = null
           progressBtn.classList.add('hide')
         }
-      }
-    }
-
-
-    // 获取视频总时长
-    const timer = setInterval(() => {
-      if (this.video_.readyState) {
-        timeEnd.innerHTML = formatSeconds(this.getAllTime_())
-        this.onready_()
-        clearInterval(timer)
-      }
-    })
-
-    // 点击播放 | 暂停
-    playMenu.onclick = () => {
-      const isPlay = this.isPlay_()
-      if (isPlay) { // 在播放
-        this.pause_()
-        btnInner.innerHTML = '&#xe60f;'
-      } else { // 已暂停
-        this.play_()
-        btnInner.innerHTML = '&#xe693;'
       }
     }
   }
@@ -525,6 +566,58 @@ class Videopc extends Target {
    */
   isReady_ () {
     return this.video_.readyState === 4
+  }
+
+  /**
+   * @description 往控件栏左槽添加控件
+   *
+   * @memberof Videopc
+   */
+  addControlLeft_ (control) {
+    this.leftControl_.appendChild(control.init_(this))
+  }
+
+  /**
+   * @description 往控件栏右槽添加控件
+   *
+   * @memberof Videopc
+   */
+  addControlRight_ (control) {
+    this.controlRight_.appendChild(control.init_(this))
+  }
+
+  /**
+   * @description 进入全屏
+   *
+   * @memberof Videopc
+   */
+  fullScreen_ () {
+    const element = document.documentElement
+    if (element.requestFullScreen) {
+      element.requestFullScreen()
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen()
+    } else if (element.webkitRequestFullScreen) {
+      element.webkitRequestFullScreen()
+    }
+    this.option.target.classList.add('sv-full-screen')
+  }
+
+  /**
+   * @description 退出全屏
+   *
+   * @memberof Videopc
+   */
+  cancelFullScreen_ () {
+    const de = document
+    if (de.exitFullscreen) {
+      de.exitFullscreen()
+    } else if (de.mozCancelFullScreen) {
+      de.mozCancelFullScreen()
+    } else if (de.webkitCancelFullScreen) {
+      de.webkitCancelFullScreen()
+    }
+    this.option.target.classList.remove('sv-full-screen')
   }
 
 }

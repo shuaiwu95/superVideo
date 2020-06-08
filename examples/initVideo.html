@@ -28,15 +28,26 @@
     <!-- built files will be auto injected -->
   <script type="text/javascript" src="./lib/superVideo.js"></script></body>
   <script>
-    // https://www.w3school.com.cn/i/movie.ogg
-   const video = new Super.Svideo('videoContainer', {
-    //  source: 'https://www.w3school.com.cn/i/movie.ogg'
-      source: new Super.VideoSource({
-        src: 'https://vdept.bdstatic.com/6c3936565a4755674d786a566d624847/5677596d446e6574/254dfe9f93f81c4e3d2d60a60b114372c373b5dff134b29be877d6cb1a717df644731cc6319189f03b2fc6f2132bed19.mp4?auth_key=1591450206-0-0-b6be7acafc7dd58cdc70e78b8c34ba08'
-      })
-   })
-   video.addEventListener('onchange', (event) => {
-    //  console.log(event)
-   })
+   const nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
+    const fullScreenControl = new Super.FullScreenControl() // 实例化“全屏”控件
+    const video = new Super.Svideo('videoContainer', {
+        source: new Super.VideoSource({ // 引入视频资源
+          src: 'test.mp4'
+        }),
+        leftControls: [nextControl], // 控件栏左槽插入控件
+        rightControls: [fullScreenControl] // 控件栏右槽插入控件
+    })
+    video.addEventListener('change', (event) => { // 监听video各属性变化
+      //  console.log(event)
+    })
+    nextControl.addEventListener('click', () => { // 监听“下一个”按钮控件点击事件
+      alert('click next menu !!!')
+    })
+    fullScreenControl.addEventListener('fullscreen', () => { // 监听进入全屏
+      console.log('is fullscreen !!!')
+    })
+    fullScreenControl.addEventListener('cancelfullscreen', () => { // 监听退出全屏
+      console.log('cancel fullscreen !!!')
+    })
   </script>
 </html>

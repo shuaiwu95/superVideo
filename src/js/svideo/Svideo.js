@@ -2,12 +2,15 @@ import Target from '../events/Target'
 import ModeType from './ModeType'
 import Videopc from './Videopc'
 import VideoSource from '../source/VideoSource'
+import Control from '../control/Control'
+import eventType from '../events/EventType'
 
-const eventType = {
-  'ONCHANGE': 'onchange',
-  'ONREADY': 'ready'
-}
-
+/**
+ * @classdesc
+ * 核心类 SuperVideo
+ * @class Svideo
+ * @extends {Target}
+ */
 class Svideo extends Target{
   constructor (target, videoOption = {}) {
     const defaultOption = {
@@ -20,7 +23,9 @@ class Svideo extends Target{
       'muted': false, // 是否关闭声音
       'playbackRate': 1, // 视频播放速度
       'poster': '', // 视频POSTER
-      'volume': 1 // 音量
+      'volume': 1, // 音量
+      'leftControls': [], // 左槽控件
+      'rightControls': [] // 右槽控件
     }
     defaultOption.target = target
     super()
@@ -60,7 +65,9 @@ class Svideo extends Target{
         'muted': this.option.muted,
         'playbackRate': this.option.playbackRate,
         'poster': this.option.poster,
-        'volume': this.option.volume
+        'volume': this.option.volume,
+        'leftControls': this.option.leftControls,
+        'rightControls': this.option.rightControls
       })
       break
     case ModeType.MB:
@@ -71,11 +78,11 @@ class Svideo extends Target{
     }
     // 监听事件
     this.video_.ontimeupdate_ = (video) => {
-      this.dispatchEvent(eventType.ONCHANGE)
+      this.dispatchEvent(eventType.CHANGE)
     }
 
     this.video_.onready_ = () => {
-      this.dispatchEvent(eventType.ONREADY)
+      this.dispatchEvent(eventType.READY)
     }
   }
 
@@ -291,6 +298,46 @@ class Svideo extends Target{
    */
   getVolume (num = 1) {
     return this.video_.getVolume_(num)
+  }
+
+  /**
+   * @description 往控件栏左槽添加控件
+   *
+   * @memberof Svideo
+   */
+  addControlLeft (control) {
+    if (control instanceof Control) {
+      this.video_.addControlLeft_(control)
+    }
+  }
+
+  /**
+   * @description 往控件栏右槽添加控件
+   *
+   * @memberof Svideo
+   */
+  addControlRight (control) {
+    if (control instanceof Control) {
+      this.video_.addControlRight_(control)
+    }
+  }
+
+  /**
+   * @description 进入全屏
+   *
+   * @memberof Svideo
+   */
+  fullScreen () {
+    this.video_.fullScreen_()
+  }
+
+  /**
+   * @description 退出全屏
+   *
+   * @memberof Svideo
+   */
+  cancelFullScreen () {
+    this.video_.cancelFullScreen_()
   }
 }
 export default Svideo
