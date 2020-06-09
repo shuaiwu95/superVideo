@@ -4,7 +4,7 @@
  * 该类精简了W3C DOM事件定义方式
  * 该类只提供 type target stopPropagation preventDefault
  * @class BaseEvent
- * @method lishuaiwu
+ * @author lishuaiwu
  * @email shuaiwu123@foxmail.com
  * @date 2020/06/06
  */

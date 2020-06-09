@@ -6,6 +6,7 @@ import VideoSource from './source/VideoSource'
 import Control from './control/Control'
 import NextControl from './control/NextControl'
 import FullScreenControl from './control/FullScreenControl'
+import Dbspeen from './control/Dbspeed'
 
 // 导出类库
 export default {
@@ -13,5 +14,6 @@ export default {
   VideoSource,
   Control,
   NextControl,
-  FullScreenControl
+  FullScreenControl,
+  Dbspeen
 }

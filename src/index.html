@@ -29,13 +29,14 @@
   </body>
   <script>
     const nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
+    const Dbspeen = new Super.Dbspeen() // 倍速控件
     const fullScreenControl = new Super.FullScreenControl() // 实例化“全屏”控件
     const video = new Super.Svideo('videoContainer', {
         source: new Super.VideoSource({ // 引入视频资源
           src: '../examples/test.mp4'
         }),
         leftControls: [nextControl], // 控件栏左槽插入控件
-        rightControls: [fullScreenControl] // 控件栏右槽插入控件
+        rightControls: [Dbspeen, fullScreenControl] // 控件栏右槽插入控件
     })
     video.addEventListener('change', (event) => { // 监听video各属性变化
       //  console.log(event)

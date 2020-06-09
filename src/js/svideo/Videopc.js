@@ -158,16 +158,6 @@ class Videopc extends Target {
     // 为默认控件设置事件
     this.setEventDefaultControl_()
 
-
-    // 获取视频总时长
-    const timer = setInterval(() => {
-      if (this.video_.readyState) {
-        timeEnd.innerHTML = formatSeconds(this.getAllTime_())
-        this.onready_()
-        clearInterval(timer)
-      }
-    })
-
     // 点击播放 | 暂停
     playMenu.onclick = () => {
       const isPlay = this.isPlay_()
@@ -201,7 +191,7 @@ class Videopc extends Target {
       timerMute = setTimeout(() => {
         mutePanel.classList.add('hide')
         clearTimeout(timerMute)
-      }, 1500)
+      }, 500)
     }
 
     mutePanel.onmouseover = () => {
@@ -336,16 +326,37 @@ class Videopc extends Target {
       // 判断是否静音
       this.setMuteIcon_()
       // 进度条数据
-      const bufferEnd = video.buffered.end(0)
       const allTime = this.getAllTime_()
-      const nowTime = this.getCurrentTime_()
-      this.cacheProgress_.style.width = `${bufferEnd/allTime * 100}%`
-      this.progressNum_.style.width = `${nowTime/allTime * 100}%`
-      const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
-      if (this.isReady_()) {
-        this.progressBtn_.style.left = `${btnLen - 12}px`
+      if (allTime > 0) {
+        for (let i = 0; i < video.buffered.length; i++) {
+          // 寻找当前时间之后最近的点
+          if (video.buffered.start(video.buffered.length - 1 - i) < video.currentTime) {
+            let bufferedLength = video.buffered.end(video.buffered.length - 1 - i) / allTime * 100 +
+                  '%'
+            this.cacheProgress_.style.width = bufferedLength
+            break
+          }
+        }
+        // const bufferEnd = video.buffered.end(0)
+        const nowTime = this.getCurrentTime_()
+        // this.cacheProgress_.style.width = `${bufferEnd/allTime * 100}%`
+        this.progressNum_.style.width = `${nowTime/allTime * 100}%`
+        const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
+        if (this.isReady_()) {
+          this.progressBtn_.style.left = `${btnLen - 12}px`
+        }
       }
     }
+    // 获取视频总时长
+    const timer = setInterval(() => {
+      if (this.video_.readyState) {
+        this.cacheProgress_.style.width = this.progressNum_.style.width = '0%'
+        this.progressBtn_.style.left = '0px'
+        this.timeEnd_.innerHTML = formatSeconds(this.getAllTime_())
+        this.onready_()
+        clearInterval(timer)
+      }
+    })
   }
 
   /**
