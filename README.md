@@ -6,12 +6,10 @@ SuperVideo是一款H5视频播放插件，基于H5 video 对象开发。
 SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为 SuperVideo 1.0测试版本，当前api是不稳定的并有可能随时发生变化。
 
 **示例**<br/>
-[DEMO][1]
-[1]: https://hulalalalala.github.io/superVideo/examples/initVideo.html
+[DEMO][https://hulalalalala.github.io/superVideo/examples/initVideo.html]
 
 **参考文档**<br/>
-[参考API][1]
-[1]: https://hulalalalala.github.io/superVideo/examples/initVideo.html
+作者正在快马加鞭的整理中。。。
 
 **安装使用**<br/>
 npm run build
