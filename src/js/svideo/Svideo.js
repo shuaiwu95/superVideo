@@ -168,7 +168,7 @@ class Svideo extends Target{
    * @memberof Svideo
    */
   setCurrentTime (time) {
-    this.video_.setCurrentTime_(time)
+    this.video_.setCurrentTimeClone_(time)
   }
 
   /**

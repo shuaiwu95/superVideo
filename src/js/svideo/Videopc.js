@@ -59,6 +59,9 @@ class Videopc extends Target {
         this.addControlRight_(item)
       })
     }
+
+    // loading
+    this.createLoading_()
   }
 
   /**
@@ -146,7 +149,7 @@ class Videopc extends Target {
     progressNum.className = 'sv-progressNum'
     progressBar.appendChild(progressNum)
     const progressBtn = this.progressBtn_ = document.createElement('div')
-    progressBtn.className = 'sv-progressBtn hide'
+    progressBtn.className = 'sv-progressBtn'
     const progressBtnInside = document.createElement('div')
     progressBtn.appendChild(progressBtnInside)
     progressBar.appendChild(progressBtn)
@@ -215,48 +218,41 @@ class Videopc extends Target {
     mutePanel.onclick = (event) => {
       event.stopPropagation()
     }
-
-    // 进度条事件处理
+    // 控制进度条
     progressBar.onmouseover = () => {
       progressBar.style.height = '4px'
-      progressBtn.classList.remove('hide')
     }
-    progressBar.onmouseleave = () => {
+    progressBar.onmouseout = () => {
       progressBar.style.height = '2px'
-      progressBtn.classList.add('hide')
     }
-
-    progressBar.onclick = (event) => {
-      let x = event.clientX
-      const time = this.getCurrentByPx_(x - 12)
-      this.setCurrentTime_(time)
-    }
-
-    // 控制进度条按钮
-    let progressBarLen = progressBar.clientWidth
-    progressBar.onmouseover = () => {
-      progressBar.style.height = '4px'
-      progressBtn.classList.remove('hide')
-      progressBar.onmousedown = () => {
-        // 获取鼠标按下的坐标
-        let l = progressBar.offsetLeft
-        document.onmousemove = (ev) => {
-          // 获取鼠标移动时的坐标
-          let x2 = ev.clientX
-          if (x2 < 12 || x2 > progressBarLen) {
-            return
-          }
-          progressBtn.style.left = `${x2 - 12}px`
-          const progressLen = parseInt(((x2-12)/(progressBarLen - 12)).toFixed(2) * 100)/100
-          const time = this.getCurrentByPx_(progressBarLen * progressLen)
-          this.setCurrentTime_(time)
-        }
-        document.onmouseup = () => {
-          document.onmousemove = null
-          document.onmouseup = null
-          progressBtn.classList.add('hide')
-        }
+    progressBtn.onmousedown = (e) => {
+      // 获取鼠标按下的坐标
+      const x = e.clientX
+      const l = progressBtn.offsetLeft
+      const max = progressBar.offsetWidth - progressBtn.offsetWidth
+      const progressBarLen = progressBar.clientWidth
+      let progressTime = 0
+      document.onmousemove = (ev) => {
+        this.pause_()
+        const mx = ev.clientX
+        const to = Math.min(max, Math.max(-2, l + (mx - x)))
+        // console.log(to)
+        const fenbi = to/progressBarLen
+        const baifenbi = `${fenbi * 100}%`
+        progressBtn.style.left = baifenbi
+        this.progressNum_.style.width = baifenbi
+        const allTime = this.getAllTime_()
+        progressTime = allTime * fenbi
+        this.timeStart_.innerHTML = formatSeconds(progressTime)
+        ev.preventDefault()
       }
+      document.onmouseup = () => {
+        document.onmousemove = null
+        document.onmouseup = null
+        this.play_()
+        this.setCurrentTime_(progressTime)
+      }
+      e.preventDefault()
     }
   }
 
@@ -312,6 +308,7 @@ class Videopc extends Target {
     const video = this.video_
     this.source_ = source ? source.getSource() : this.option.source.getSource()
     video.appendChild(this.source_)
+    video.ontimeupdate = null
     video.ontimeupdate = () => {
     //   console.log(video.currentTime)
     //   console.log(video.duration)
@@ -337,15 +334,14 @@ class Videopc extends Target {
             break
           }
         }
-        // const bufferEnd = video.buffered.end(0)
         const nowTime = this.getCurrentTime_()
-        // this.cacheProgress_.style.width = `${bufferEnd/allTime * 100}%`
         this.progressNum_.style.width = `${nowTime/allTime * 100}%`
         const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
         if (this.isReady_()) {
-          this.progressBtn_.style.left = `${btnLen - 12}px`
+          this.progressBtn_.style.left = `${btnLen}px`
         }
       }
+      this.hideLoad_()
     }
     // 获取视频总时长
     const timer = setInterval(() => {
@@ -357,6 +353,28 @@ class Videopc extends Target {
         clearInterval(timer)
       }
     })
+  }
+
+  createLoading_ () {
+    const div = `
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    `
+    const objE = this.loading_ = document.createElement('div')
+    objE.innerHTML = div
+    objE.className = 'sv-loading hide'
+    this.option.target.appendChild(objE)
+  }
+
+  showLoad_ () {
+    this.loading_.classList.remove('hide')
+  }
+
+  hideLoad_ () {
+    this.loading_.classList.add('hide')
   }
 
   /**
@@ -422,11 +440,16 @@ class Videopc extends Target {
    */
   setCurrentTime_ (time) {
     this.video_.currentTime = time
+    this.showLoad_()
+  }
+
+  setCurrentTimeClone_(time) {
+    this.video_.currentTime = time
     const allTime = this.getAllTime_()
-    const nowTime = time
-    const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
+    this.progressNum_.style.width = `${time/allTime * 100}%`
+    const btnLen = this.progressBar_.clientWidth * (time/allTime)
     if (this.isReady_()) {
-      this.progressBtn_.style.left = `${btnLen - 12}px`
+      this.progressBtn_.style.left = `${btnLen - 16}px`
     }
   }
 

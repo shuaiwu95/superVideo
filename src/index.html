@@ -7,33 +7,36 @@
     <title>super video</title>
     <style>
       html,body {
-        width: 100%;
-        height: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: #292929;
       }
       * {
         padding: 0;
         margin: 0;
       }
       #videoContainer {
-        width: 496px;
-        height: 280px;
+    width: 800px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
       }
     </style>
-  </head>
   <body>
     <noscript>
       <strong>We're sorry but soucecode doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="videoContainer"></div>
     <!-- built files will be auto injected -->
-  </body>
+</body>
   <script>
-    const nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
-    const Dbspeen = new Super.Dbspeen() // 倍速控件
+   const nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
+   const Dbspeen = new Super.Dbspeen() // 倍速控件
     const fullScreenControl = new Super.FullScreenControl() // 实例化“全屏”控件
     const video = new Super.Svideo('videoContainer', {
         source: new Super.VideoSource({ // 引入视频资源
-          src: '../examples/test.mp4'
+          src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
         }),
         leftControls: [nextControl], // 控件栏左槽插入控件
         rightControls: [Dbspeen, fullScreenControl] // 控件栏右槽插入控件
