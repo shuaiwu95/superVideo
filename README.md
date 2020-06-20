@@ -98,6 +98,9 @@ video.addRightControl(new CustomControl())
 shuaiwu123@foxmail.com<br/>
 lishuaiwu5201314@gmail.com<br/>
 
+**SuperVideo交流群1**<br/>
+1127738585
+
 **H5前端交流QQ群**<br/>
 106048926
 
