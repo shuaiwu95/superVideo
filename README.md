@@ -91,6 +91,9 @@ const video = new Svideo('videoContainer', {
 video.addRightControl(new CustomControl())
 ```
 
+**事件监听**<br/>
+支持原生video对象的所有事件监听
+
 **联系作者**<br/>
 shuaiwu123@foxmail.com<br/>
 lishuaiwu5201314@gmail.com<br/>
