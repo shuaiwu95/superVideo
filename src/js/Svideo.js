@@ -1,11 +1,11 @@
-import Target from '../events/Target'
-import ModeType from './ModeType'
-import Videopc from './Videopc'
-import Videomb from './Videomb'
-import VideoSource from '../source/VideoSource'
-import Control from '../control/Control'
-import eventType from '../events/EventType'
-import isPc from '../util/isPc'
+import Target from './events/Target'
+import ModeType from './svideo/ModeType'
+import Videopc from './svideo/Videopc'
+import Videomb from './svideo/Videomb'
+import VideoSource from './source/VideoSource'
+import Control from './control/Control'
+import eventType from './events/EventType'
+import isPc from './util/isPc'
 
 /**
  * @classdesc
@@ -27,7 +27,8 @@ class Svideo extends Target{
       'poster': '', // 视频POSTER
       'volume': 1, // 音量
       'leftControls': [], // 左槽控件
-      'rightControls': [] // 右槽控件
+      'rightControls': [], // 右槽控件
+      'centerControls': [] // 中间插槽
     }
     defaultOption.target = target
     super()
@@ -73,7 +74,8 @@ class Svideo extends Target{
         'poster': this.option.poster,
         'volume': this.option.volume,
         'leftControls': this.option.leftControls,
-        'rightControls': this.option.rightControls
+        'rightControls': this.option.rightControls,
+        'centerControls': this.option.centerControls
       })
       break
     case ModeType.MB:
@@ -89,7 +91,8 @@ class Svideo extends Target{
         'poster': this.option.poster,
         'volume': this.option.volume,
         'leftControls': this.option.leftControls,
-        'rightControls': this.option.rightControls
+        'rightControls': this.option.rightControls,
+        'centerControls': this.option.centerControls
       })
       break
     default:
@@ -106,6 +109,20 @@ class Svideo extends Target{
 
     this.video_.videoEvent_ = (customEvent) => {
       this.dispatchEvent(customEvent)
+      // 更新参数
+      switch (customEvent) {
+      case eventType.TIME_UPDATE:
+        this.option.currentTime = this.video_.option.currentTime = this.video_.getCurrentTime_()
+        break
+      case eventType.VOLUME_CHANGE:
+        this.option.volume = this.video_.option.volume = this.video_.getVolume_()
+        break
+      case eventType.RATE_CHANGE:
+        this.option.playbackRate = this.video_.option.playbackRate = this.video_.getPlaybackRate_()
+        break
+      default:
+        break
+      }
     }
   }
 
@@ -339,9 +356,21 @@ class Svideo extends Target{
    *
    * @memberof Svideo
    */
-  addControlRight (control) {
+  addControlRight (control, pre = false) {
     if (control instanceof Control) {
-      this.video_.addControlRight_(control)
+      this.video_.addControlRight_(control, pre)
+    }
+  }
+
+  /**
+   * @description
+   * 往中间插槽添加控件
+   * @param {*} control
+   * @memberof Svideo
+   */
+  addControlCenter (control) {
+    if (control instanceof Control) {
+      this.video_.addControlCenter_(control)
     }
   }
 
@@ -361,6 +390,25 @@ class Svideo extends Target{
    */
   cancelFullScreen () {
     this.video_.cancelFullScreen_()
+  }
+
+  /**
+   * @description
+   * 添加弹幕
+   * @param {*} arg
+   * @memberof Svideo
+   */
+  addBarrage (arg) {
+    this.video_.addBarrage_(arg)
+  }
+
+  /**
+   * @description
+   * 清空所有弹幕
+   * @memberof Svideo
+   */
+  clearBarrages () {
+    this.video_.clearBarrages_()
   }
 }
 export default Svideo

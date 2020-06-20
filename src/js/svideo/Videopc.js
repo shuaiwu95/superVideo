@@ -3,6 +3,7 @@ import ModeType from './ModeType'
 import { formatSeconds } from '../util/formatTime'
 import '../../css/videoControl-pc.css'
 import EventType from '../events/EventType'
+import Barrage from './Barrage'
 
 /**
  * @classdesc
@@ -21,6 +22,7 @@ class Videopc extends Target {
     }
     super()
     this.option = Object.assign({}, defaultOption, videopcOption)
+    this.rollBarrage_ = false
     this.createElement_()
   }
 
@@ -51,6 +53,7 @@ class Videopc extends Target {
     // add defaault control
     const leftControls = this.option.leftControls
     const rightControls = this.option.rightControls
+    const centerControls = this.option.centerControls
     if (leftControls.length > 0) {
       leftControls.forEach(item => {
         this.addControlLeft_(item)
@@ -59,6 +62,11 @@ class Videopc extends Target {
     if (rightControls.length > 0) {
       rightControls.forEach(item => {
         this.addControlRight_(item)
+      })
+    }
+    if (centerControls.length > 0) {
+      centerControls.forEach(item => {
+        this.addControlCenter_(item)
       })
     }
 
@@ -110,6 +118,11 @@ class Videopc extends Target {
     timeRang.appendChild(timeStart)
     timeRang.appendChild(split)
     timeRang.appendChild(timeEnd)
+
+    // center slote
+    const controlCenter = this.controlCenter_ = document.createElement('div')
+    controlCenter.className='sv-control-c'
+    control.appendChild(controlCenter)
 
     // control
     const controlRight = this.controlRight_ = document.createElement('div')
@@ -258,6 +271,7 @@ class Videopc extends Target {
         document.onmouseup = null
         this.play_()
         this.setCurrentTime_(progressTime)
+        this.clearBarrages_()
       }
       e.preventDefault()
     }
@@ -623,8 +637,22 @@ class Videopc extends Target {
    *
    * @memberof Videopc
    */
-  addControlRight_ (control) {
-    this.controlRight_.appendChild(control.init_(this))
+  addControlRight_ (control, pre = false) {
+    if (pre) {
+      this.controlRight_.prepend(control.init_(this))
+    } else {
+      this.controlRight_.appendChild(control.init_(this))
+    }
+  }
+
+  /**
+   * @description
+   * 往中间插槽添加控件
+   * @param {*} control
+   * @memberof Videopc
+   */
+  addControlCenter_ (control) {
+    this.controlCenter_.appendChild(control.init_(this))
   }
 
   /**
@@ -661,6 +689,112 @@ class Videopc extends Target {
     }
     this.option.target.classList.remove('sv-full-screen')
     this.videoEvent_(EventType.CANCEL_FULL_SCREEN)
+  }
+
+  /**
+   * @description
+   * 弹幕
+   * @param {string | Barrage}
+   * @memberof Videopc
+   */
+  addBarrage_ (arg) {
+    let text = null
+    let color = '#ffffff'
+    let fontSize = '14px'
+    let fontFamily = '微软雅黑'
+    let fontWeight = '100'
+    let minTop = 80
+    let leftDom = null
+    let rightDom = null
+    if (typeof arg === 'string') {
+      text = arg
+    } else {
+      text = arg.getText()
+      color = arg.getColor()
+      fontSize = arg.getFontSize()
+      fontFamily = arg.getFontFamily()
+      fontWeight = arg.getFontWeight()
+      leftDom = arg.getLeftDom()
+      rightDom = arg.getRightDom()
+    }
+    const dom = this.option.target
+    const barrage = document.createElement('div')
+    barrage.className = 'sv-brrage'
+    const barrageLeft = document.createElement('div')
+    barrageLeft.className = 'sv-brrage-left'
+    if (leftDom !== null) {
+      barrageLeft.appendChild(leftDom)
+    }
+    if (rightDom !== null) {
+      barrageLeft.appendChild(rightDom)
+    }
+    const barrageCenter = document.createElement('div')
+    barrageCenter.className = 'sv-brrage-center'
+    barrageCenter.innerHTML = text
+    barrageCenter.style.color = color
+    barrageCenter.style.fontSize = fontSize
+    barrageCenter.style.fontFamily = fontFamily
+    barrageCenter.style.fontWeight = fontWeight
+    const barrageRight = document.createElement('div')
+    barrageRight.className = 'sv-brrage-right'
+    barrage.appendChild(barrageLeft)
+    barrage.appendChild(barrageCenter)
+    barrage.appendChild(barrageRight)
+    dom.appendChild(barrage)
+    dom.style.overflow = 'hidden'
+    const rect = dom.getBoundingClientRect()
+    const domWidth = rect.right - rect.left
+    const domHeight = rect.bottom - rect.top
+    // 定义弹幕位置
+    barrage.style.left = domWidth + 'px'
+    barrage.style.top = (domHeight - minTop) * Number(Math.random().toFixed(2)) + 'px'
+    // 滚动弹幕
+    let animateId = null
+    let roll = (timer) => {
+      let now = Number(new Date())
+      roll.last = roll.last || now
+      roll.timer = roll.timer || timer
+      let left = barrage.offsetLeft
+      let rect2 = barrage.getBoundingClientRect()
+      if (left < rect2.left - rect2.right) {
+        dom.removeChild(barrage)
+      } else {
+        if (now - roll.last >= roll.timer) {
+          roll.last = now
+          left -= 3
+          barrage.style.left = left + 'px'
+        }
+        animateId = requestAnimationFrame(roll)
+      }
+    }
+
+    if (this.rollBarrage_) {
+      roll(50 * Number(Math.random().toFixed(2)))
+    }
+
+    // 开始暂停弹幕
+    this.addEventListener('pause', () => {
+      cancelAnimationFrame(animateId)
+    })
+    this.addEventListener('play', () => {
+      roll(50 * Number(Math.random().toFixed(2)))
+    })
+  }
+
+  /**
+   * @description
+   * 清空弹幕
+   * @memberof Videopc
+   */
+  clearBarrages_ () {
+    const barrages = document.getElementsByClassName('sv-brrage')
+    for (let i = 0; i < barrages.length;i ++){
+      const barrage = barrages[i]
+      this.option.target.removeChild(barrage)
+    }
+    if (barrages.length > 0) {
+      this.clearBarrages_()
+    }
   }
 
   /**
@@ -710,6 +844,12 @@ class Videopc extends Target {
         break
       case EventType.ABORT: // 当播放遇到错误时
         console.error('abort')
+        break
+      case EventType.PLAY:
+        this.rollBarrage_ = true
+        break
+      case EventType.PAUSE:
+        this.rollBarrage_ = false
         break
       default:
         break

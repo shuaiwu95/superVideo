@@ -83,6 +83,7 @@ class Videomb extends Videopc {
       document.removeEventListener('touchend', touchEnd)
       this.play_()
       this.setCurrentTime_(progressTime)
+      this.clearBarrages_()
     }
 
     const touchMove = (ev) => {

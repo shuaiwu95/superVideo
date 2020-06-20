@@ -35,5 +35,6 @@ export default {
   'RATE_CHANGE': 'ratechange',
   'VOLUME_CHANGE': 'volumechange',
   'CANCEL_FULL_SCREEN': 'cancelfullscreen',
-  'FULL_SCREEN': 'fullscreen'
+  'FULL_SCREEN': 'fullscreen',
+  'SEND': 'send'
 }
