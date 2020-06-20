@@ -642,6 +642,7 @@ class Videopc extends Target {
       element.webkitRequestFullScreen()
     }
     this.option.target.classList.add('sv-full-screen')
+    this.videoEvent_(EventType.FULL_SCREEN)
   }
 
   /**
@@ -659,6 +660,7 @@ class Videopc extends Target {
       de.webkitCancelFullScreen()
     }
     this.option.target.classList.remove('sv-full-screen')
+    this.videoEvent_(EventType.CANCEL_FULL_SCREEN)
   }
 
   /**
@@ -712,8 +714,11 @@ class Videopc extends Target {
       default:
         break
       }
+      this.videoEvent_(customEvent)
     })
   }
+
+  videoEvent_ () {}
 
 }
 export default Videopc

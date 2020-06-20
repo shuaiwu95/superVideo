@@ -103,6 +103,10 @@ class Svideo extends Target{
     this.video_.onready_ = () => {
       this.dispatchEvent(eventType.READY)
     }
+
+    this.video_.videoEvent_ = (customEvent) => {
+      this.dispatchEvent(customEvent)
+    }
   }
 
   /**

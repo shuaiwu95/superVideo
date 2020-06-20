@@ -33,6 +33,7 @@ export default {
   'TIME_UPDATE': 'timeupdate',
   'ENDED': 'ended',
   'RATE_CHANGE': 'ratechange',
-  'VOLUME_CHANGE': 'volumechange'
-
+  'VOLUME_CHANGE': 'volumechange',
+  'CANCEL_FULL_SCREEN': 'cancelfullscreen',
+  'FULL_SCREEN': 'fullscreen'
 }
