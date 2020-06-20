@@ -1,9 +1,11 @@
 import Target from '../events/Target'
 import ModeType from './ModeType'
 import Videopc from './Videopc'
+import Videomb from './Videomb'
 import VideoSource from '../source/VideoSource'
 import Control from '../control/Control'
 import eventType from '../events/EventType'
+import isPc from '../util/isPc'
 
 /**
  * @classdesc
@@ -31,6 +33,9 @@ class Svideo extends Target{
     super()
     this.option = Object.assign({}, defaultOption, videoOption)
     this.video_ = null
+    if (!isPc()) {
+      this.option.mode = ModeType.MB
+    }
     this.init()
   }
 
@@ -57,6 +62,7 @@ class Svideo extends Target{
     switch (this.option.mode) {
     case ModeType.PC:
       this.video_ = new Videopc({
+        'mode': this.option.mode,
         'target': videoTarget,
         'source': videoSource,
         'autoplay': this.option.autoplay,
@@ -71,7 +77,20 @@ class Svideo extends Target{
       })
       break
     case ModeType.MB:
-
+      this.video_ = new Videomb({
+        'mode': this.option.mode,
+        'target': videoTarget,
+        'source': videoSource,
+        'autoplay': this.option.autoplay,
+        'currentTime': this.option.currentTime,
+        'loop': this.option.loop,
+        'muted': this.option.muted,
+        'playbackRate': this.option.playbackRate,
+        'poster': this.option.poster,
+        'volume': this.option.volume,
+        'leftControls': this.option.leftControls,
+        'rightControls': this.option.rightControls
+      })
       break
     default:
       break

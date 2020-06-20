@@ -1,6 +1,8 @@
 import Target from '../events/Target'
+import ModeType from './ModeType'
 import { formatSeconds } from '../util/formatTime'
 import '../../css/videoControl-pc.css'
+import EventType from '../events/EventType'
 
 /**
  * @classdesc
@@ -62,6 +64,9 @@ class Videopc extends Target {
 
     // loading
     this.createLoading_()
+
+    // events
+    this.listenerEvents_()
   }
 
   /**
@@ -117,7 +122,9 @@ class Videopc extends Target {
     muteInner.innerHTML = '&#xe753;'
     muteInner.className = 'sv-font sv-play'
     muteMenu.appendChild(muteInner)
-
+    if (this.option.mode === ModeType.MB) {
+      muteMenu.style.display = 'none'
+    }
     // mutePanel
     const mutePanel = this.mutePanel_ = document.createElement('div')
     mutePanel.className = 'sv-mutePanel hide'
@@ -652,6 +659,60 @@ class Videopc extends Target {
       de.webkitCancelFullScreen()
     }
     this.option.target.classList.remove('sv-full-screen')
+  }
+
+  /**
+   * @description
+   * 事件监听
+   * @memberof Videopc
+   */
+  listenerEvents_ () {
+    // 开始播放
+    this.eventFn_('play', EventType.PLAY)
+    // 正在请求数据
+    this.eventFn_('loadstart', EventType.LOADS_SART)
+    // 正在请求数据
+    this.eventFn_('suspend', EventType.SUSPEND)
+    // 非错误引起的终止下载
+    this.eventFn_('abort', EventType.ABORT)
+    // 客户端正在请求数据
+    this.eventFn_('progress', EventType.PROGRESS)
+    // 请求数据时遇到错误
+    this.eventFn_('error', EventType.ERROR)
+    // 网速失速
+    this.eventFn_('stalled', EventType.STALLED)
+    // 暂停播放
+    this.eventFn_('pause', EventType.PAUSE)
+    // 成功获取资源长度
+    this.eventFn_('loadedmetadata', EventType.LOADED_METADATA)
+    // 等待数据，并非错误
+    this.eventFn_('waiting', EventType.WAITING)
+    // 开始回放
+    this.eventFn_('playing', EventType.PLAYING)
+    // 播放时长改变
+    this.eventFn_('timeupdate', EventType.TIME_UPDATE)
+    // 播放结束
+    this.eventFn_('ended', EventType.ENDED)
+    // 播放速率改变
+    this.eventFn_('ratechange', EventType.RATE_CHANGE)
+    // 音量改变
+    this.eventFn_('volumechange', EventType.VOLUME_CHANGE)
+  }
+
+  eventFn_ (videoEvent, customEvent) {
+    this.video_.addEventListener(videoEvent, () => {
+      this.dispatchEvent(customEvent)
+      switch (customEvent) {
+      case EventType.ERROR: // 当播放遇到错误时
+        console.error('error')
+        break
+      case EventType.ABORT: // 当播放遇到错误时
+        console.error('abort')
+        break
+      default:
+        break
+      }
+    })
   }
 
 }

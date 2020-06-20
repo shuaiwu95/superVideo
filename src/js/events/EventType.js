@@ -19,5 +19,20 @@ export default {
   'WHEEL': 'wheel',
   'READY': 'ready',
   'FULLSCREEN': 'fullscreen',
-  'CANCELFULLSCREEN': 'cancelfullscreen'
+  'CANCELFULLSCREEN': 'cancelfullscreen',
+  'PLAY': 'play',
+  'LOADS_SART': 'loadstart',
+  'SUSPEND': 'suspend',
+  'ABORT': 'abort',
+  'PROGRESS': 'progress',
+  'STALLED': 'staled',
+  'PAUSE': 'pause',
+  'LOADED_METADATA': 'loadedmetadata',
+  'WAITING': 'waiting',
+  'PLAYING': 'playing',
+  'TIME_UPDATE': 'timeupdate',
+  'ENDED': 'ended',
+  'RATE_CHANGE': 'ratechange',
+  'VOLUME_CHANGE': 'volumechange'
+
 }

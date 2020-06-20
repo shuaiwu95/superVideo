@@ -43,7 +43,7 @@ class Dbspeen extends Control {
       }
       li.innerHTML = `${item}X`
       li.onclick = () => {
-        this.video_.setPlaybackRate_(parseInt(item))
+        this.video_.setPlaybackRate_(Number(item))
         this.active_ = item
         span.innerHTML = this.icon_[this.active_]
         this.activeLi_.classList.remove('sv-active')
@@ -90,7 +90,7 @@ class Dbspeen extends Control {
         this.activeLi_.classList.remove('sv-active')
       }
       this.activeLi_ = activeLi_
-      this.video_.setPlaybackRate_(parseInt(num))
+      this.video_.setPlaybackRate_(Number(num))
     }
   }
 }
