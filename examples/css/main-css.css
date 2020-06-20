@@ -1,12 +1,12 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1867770 */
-    src: url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.eot');
-    src: url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.eot?#iefix') format('embedded-opentype'),
-    url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.woff') format('woff'),
-    url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.ttf') format('truetype'),
-    url('https://at.alicdn.com/t/font_1867770_aheoboelyyp.svg#iconfont') format('svg');
-}
+    src: url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.eot');
+    src: url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.eot?#iefix') format('embedded-opentype'),
+    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.woff') format('woff'),
+    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.ttf') format('truetype'),
+    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.svg#iconfont') format('svg');
+  }
 
 .sv-target video {
     background-color: #000000;
@@ -17,6 +17,11 @@
 }
 
 .sv-play {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.sv-fontBtn {
     color: #ffffff;
     font-size: 20px;
 }
@@ -44,7 +49,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 44px;
+    height: 54px;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: row;
@@ -204,7 +209,7 @@
 }
 
 .hide {
-    display: none;
+    display: none!important;
 }
 
 .sv-full-screen {
@@ -259,6 +264,24 @@
 .sv-loading span:nth-child(5){
     -webkit-animation-delay:0.8s;
     animation-delay:0.8s;
+}
+
+/* 弹幕 */
+.sv-brrage {
+    position: absolute;
+    padding: 4px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    width: auto;
+    word-wrap: break-word;
+    max-width: 500px;
+    min-width: 100px;
+}
+
+.sv-brrage-center {
+    text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
 }.sv-el-control-style {
     padding-right: 10px;
     padding-left: 10px;
@@ -308,4 +331,104 @@
 }
 .sv-active{
     color: #00a1d6!important;
+}
+
+.sv-control-c {
+    height: 100%;
+}
+
+/* 弹幕控件 */
+.sv-barrage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    position: relative;
+}
+.sv-barrage-a {
+    height: 26px;
+}
+.sv-barrage-input {
+    height: 17px;
+    outline: none;
+    padding: 6px 30px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top: 1px solid #333333;
+    border-left: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-right: 1px solid #00a1d6;
+    background: none;
+    font-size: 12px;
+    color: #fff;
+}
+.sv-barrage-button {
+    height: 31px;
+    background-color: #00a1d6;
+    color: #fff;
+    width: 60px;
+    min-width: 60px;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-top: 1px solid #333333;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #00a1d6;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    outline: none;
+    vertical-align: middle;
+}
+.sv-barrage-button:hover{
+    background-color: #03bbf7;
+    border-left: 1px solid #03bbf7;
+}
+.sv-barrage-font {
+    position: absolute;
+    left: 6px;
+    top: 16px;
+    cursor: pointer;
+}
+
+.sv-apanel {
+    position: absolute;
+    bottom: 54px;
+    left: -10px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 200px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    z-index: 99999;
+}
+.sv-apanel-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.sv-apanel-item span {
+    font-size: 12px;
+}
+.sv-apanel-item ul {
+    margin: 0;
+    padding: 0;
+    margin-top: 8px;
+}
+.sv-apanel-item ul li {
+    list-style: none;
+    background-color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    float: left;
+    cursor: pointer;
+}
+.activeColor{
+    box-sizing: border-box;
+    border: 2px solid #ffff;
 }
