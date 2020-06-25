@@ -9,7 +9,7 @@ SuperVideo集成了大部分video对象常用属性与方法，内置了常用�
 [DEMO][https://hulalalalala.github.io/superVideo/examples/index.html]
 
 **参考文档**<br/>
-作者正在快马加鞭的整理中。。。
+[API][https://hulalalalala.github.io/superVideo/api/index.html]
 
 **安装使用**<br/>
 npm run build
