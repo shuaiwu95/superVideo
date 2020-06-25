@@ -40,7 +40,9 @@ class Videopc extends Target {
     video.setAttribute('height', '100%')
     // video.setAttribute('controls', 'controls')
     video.autoplay = this.option.autoplay
-    video.currentTime = this.option.currentTime
+    video.onloadedmetadata = () => {
+      video.currentTime = this.option.currentTime
+    }
     video.loop = this.option.loop
     video.muted = this.option.muted
     video.playbackRate = this.option.playbackRate

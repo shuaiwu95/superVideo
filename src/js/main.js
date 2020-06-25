@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 // 类库入口文件
 import Svideo from './Svideo'
 import VideoSource from './source/VideoSource'
