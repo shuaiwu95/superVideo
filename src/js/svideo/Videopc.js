@@ -194,6 +194,28 @@ class Videopc extends Target {
         btnInner.innerHTML = '&#xe693;'
       }
     }
+
+    // 画中画
+    this.isPip_ = false
+    const picinpic = document.createElement('div')
+    picinpic.className = 'sv-picinpic sv-font'
+    this.option.target.appendChild(picinpic)
+    picinpic.innerHTML = '<span class="sv-pic-pic">&#xe613;</span><span id="sv-hzh">画中画</span>'
+    picinpic.onclick = () => {
+      if (this.isPip_) {
+        this.leavePicInPic_()
+      } else {
+        this.enterPicInPic_()
+      }
+    }
+
+    const isChrome = window.navigator.userAgent.indexOf('Chrome') > -1
+    if (this.option.mode === ModeType.MB) {
+      picinpic.classList.add('hide')
+    }
+    if (!this.option.showPictureInPicture || !isChrome) {
+      picinpic.classList.add('hide')
+    }
   }
 
   /**
@@ -801,6 +823,24 @@ class Videopc extends Target {
 
   /**
    * @description
+   * 进入画中画模式
+   * @memberof Videopc
+   */
+  enterPicInPic_ () {
+    this.video_.requestPictureInPicture()
+  }
+
+  /**
+   * @description
+   * 退出画中画模式
+   * @memberof Videopc
+   */
+  leavePicInPic_ () {
+    document.exitPictureInPicture()
+  }
+
+  /**
+   * @description
    * 事件监听
    * @memberof Videopc
    */
@@ -835,6 +875,9 @@ class Videopc extends Target {
     this.eventFn_('ratechange', EventType.RATE_CHANGE)
     // 音量改变
     this.eventFn_('volumechange', EventType.VOLUME_CHANGE)
+    // 进入画中画 || 退出画中画
+    this.eventFn_('enterpictureinpicture', EventType.ENTER_PIP)
+    this.eventFn_('leavepictureinpicture', EventType.LEAVE_PIP)
   }
 
   eventFn_ (videoEvent, customEvent) {
@@ -852,6 +895,14 @@ class Videopc extends Target {
         break
       case EventType.PAUSE:
         this.rollBarrage_ = false
+        break
+      case EventType.ENTER_PIP:
+        document.getElementById('sv-hzh').innerHTML = '画中画使用中'
+        this.isPip_ = true
+        break
+      case EventType.LEAVE_PIP:
+        document.getElementById('sv-hzh').innerHTML = '画中画'
+        this.isPip_ = false
         break
       default:
         break

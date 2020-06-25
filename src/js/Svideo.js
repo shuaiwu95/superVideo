@@ -26,6 +26,7 @@ class Svideo extends Target{
       'playbackRate': 1, // 视频播放速度
       'poster': '', // 视频POSTER
       'volume': 1, // 音量
+      'showPictureInPicture': true, // 是否显示画中画控件 该控件仅在chrome有效
       'leftControls': [], // 左槽控件
       'rightControls': [], // 右槽控件
       'centerControls': [] // 中间插槽
@@ -73,6 +74,7 @@ class Svideo extends Target{
         'playbackRate': this.option.playbackRate,
         'poster': this.option.poster,
         'volume': this.option.volume,
+        'showPictureInPicture': this.option.showPictureInPicture,
         'leftControls': this.option.leftControls,
         'rightControls': this.option.rightControls,
         'centerControls': this.option.centerControls
@@ -90,6 +92,7 @@ class Svideo extends Target{
         'playbackRate': this.option.playbackRate,
         'poster': this.option.poster,
         'volume': this.option.volume,
+        'showPictureInPicture': this.option.showPictureInPicture,
         'leftControls': this.option.leftControls,
         'rightControls': this.option.rightControls,
         'centerControls': this.option.centerControls
@@ -409,6 +412,23 @@ class Svideo extends Target{
    */
   clearBarrages () {
     this.video_.clearBarrages_()
+  }
+  /**
+   * @description
+   * 进入画中画模式
+   * @memberof Svideo
+   */
+  enterPicInPic () {
+    this.video_.enterPicInPic_()
+  }
+
+  /**
+   * @description
+   * 退出画中画模式
+   * @memberof Svideo
+   */
+  leavePicInPic () {
+    this.video_.leavePicInPic_()
   }
 }
 export default Svideo

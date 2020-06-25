@@ -36,5 +36,7 @@ export default {
   'VOLUME_CHANGE': 'volumechange',
   'CANCEL_FULL_SCREEN': 'cancelfullscreen',
   'FULL_SCREEN': 'fullscreen',
-  'SEND': 'send'
+  'SEND': 'send',
+  'ENTER_PIP': 'enterpictureinpicture',
+  'LEAVE_PIP': 'leavepictureinpicture'
 }
