@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'iconfont';  /* project id 1772526 */
+    src: url('//at.alicdn.com/t/font_1772526_y87y73yc11p.eot');
+    src: url('//at.alicdn.com/t/font_1772526_y87y73yc11p.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1772526_y87y73yc11p.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1772526_y87y73yc11p.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1772526_y87y73yc11p.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1772526_y87y73yc11p.svg#iconfont') format('svg');
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .iconleft:before {
+    content: "\E65C";
+  }
+  
+  .iconright:before {
+    content: "\E65E";
+  }
+  
+  .iconzuozuo-:before {
+    content: "\E641";
+  }
+  
+  .iconyouyou-:before {
+    content: "\E642";
+  }
+
+.xlsx-con {
+    position: relative;
+}
+.xlsx-con table {
+    border-collapse: collapse;
+}
+.xlsx-con td {
+    border: 1px solid #000000;
+    height: 26px;
+    min-width: 80px;
+}
+.xlsx-con td:hover{
+    cursor: crosshair;
+}
+.xlsx-con td:active{
+    background-color: aquamarine;
+}
+
+/* sheet */
+.xlsx-con .xlsx-con-menu {
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #999999;
+    box-sizing: border-box;
+}
+.xlsx-con-menu-con {
+    position: absolute;
+    bottom: 0;
+    left: 100px;
+    height: 100%;
+    box-sizing: border-box;
+}
+.xlsx-con-menu-item  {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 20px;
+    font-size: 14px;
+    border-left: 1px solid #999999;
+    cursor: pointer;
+}
+.xlsx-con-menu-item:hover {
+    background-color: #dddddd;
+}
+.xlsx-active {
+    background-color: #dddddd;
+}
+
+/* 切换按钮 */
+.xlsx-con-menu-clickMenu-con {
+    height: 100%;
+    width: 80px;
+    background-color: #C2D9F6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    padding: 0 10px;
+}
+
+.xlsx-con-menu-clickMenu-con span {
+    display: block;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    color: #15428B;
+}
+.xlsx-con-menu-clickMenu-con span:hover {
+    cursor: pointer;
+    color: #ffffff;
+}
+
+/* table-con */
+.xlsx-tablePanel-con {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: auto;
+}
+.showXlsx-panel {
+    display: block!important;
+}

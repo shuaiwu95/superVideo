@@ -54,7 +54,7 @@ class Dbspeen extends Control {
     })
     speedControl.appendChild(ul)
 
-    // 显示音量调节控件
+    // 显示倍速调节控件
     speed.onmouseover = () => {
       speedControl.classList.remove('hide')
     }

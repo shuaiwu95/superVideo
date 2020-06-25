@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1867770 */
-    src: url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.eot');
-    src: url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.eot?#iefix') format('embedded-opentype'),
-    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.woff') format('woff'),
-    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.ttf') format('truetype'),
-    url('https://at.alicdn.com/t/font_1867770_bbu36krq0db.svg#iconfont') format('svg');
+    src: url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.eot');
+    src: url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.eot?#iefix') format('embedded-opentype'),
+    url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.woff') format('woff'),
+    url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.ttf') format('truetype'),
+    url('https://at.alicdn.com/t/font_1867770_5pzef3csvso.svg#iconfont') format('svg');
   }
 
 .sv-target video {
@@ -14,6 +14,12 @@
 
 .sv-font {
     font-family: 'iconfont';
+}
+
+.sv-pic-pic {
+    color: #ffffff;
+    font-size: 20px;
+    margin-right: 6px;
 }
 
 .sv-play {
@@ -282,6 +288,34 @@
 
 .sv-brrage-center {
     text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
+}
+
+/* 画中画 */
+
+.sv-picinpic {
+    position: absolute;
+    z-index: 22;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    white-space: nowrap;
+    height: 36px;
+    padding: 0 12px;
+    overflow: visible;
+    border-radius: 2px;
+    border-radius: 18px;
+    background: #2b2b2b;
+    background: rgba(43,43,43,.8);
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+.sv-picinpic:hover {
+    background: linear-gradient(90deg,#4ca9c7 0,#03bbf7)!important
 }.sv-el-control-style {
     padding-right: 10px;
     padding-left: 10px;

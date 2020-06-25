@@ -339,8 +339,8 @@ class Svideo extends Target{
    *
    * @memberof Svideo
    */
-  getVolume (num = 1) {
-    return this.video_.getVolume_(num)
+  getVolume () {
+    return this.video_.getVolume_()
   }
 
   /**
