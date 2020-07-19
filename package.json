@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "一款播放器插件",
   "scripts": {
-    "dev": "webpack-dev-server --mode development",
+    "dev": "webpack-dev-server --mode development --host 0.0.0.0",
     "start": "npm run dev",
     "build": "webpack --mode production"
   },
@@ -39,6 +39,7 @@
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "hls.js": "^0.14.3"
   }
 }

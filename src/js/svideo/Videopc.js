@@ -4,6 +4,7 @@ import { formatSeconds } from '../util/formatTime'
 import '../../css/videoControl-pc.css'
 import EventType from '../events/EventType'
 import Barrage from './Barrage'
+import sourceType from '../source/sourceType'
 
 /**
  * @classdesc
@@ -49,6 +50,9 @@ class Videopc extends Target {
     video.poster = this.option.poster
     video.volume = this.option.volume
     targetElement.appendChild(video)
+    // loading
+    this.createLoading_()
+    // addSource
     this.addSource_()
     this.createControlContainer_(targetElement)
 
@@ -71,9 +75,6 @@ class Videopc extends Target {
         this.addControlCenter_(item)
       })
     }
-
-    // loading
-    this.createLoading_()
 
     // events
     this.listenerEvents_()
@@ -216,6 +217,12 @@ class Videopc extends Target {
     if (!this.option.showPictureInPicture || !isChrome) {
       picinpic.classList.add('hide')
     }
+
+    // 如果是直播流，则隐藏进度条
+    if (this.sourceType === sourceType.M3U8) {
+      this.progressBar_.classList.add('hide')
+      timeRang.classList.add('hide')
+    }
   }
 
   /**
@@ -350,9 +357,20 @@ class Videopc extends Target {
    * @memberof Videopc
    */
   addSource_ (source) {
+    this.showLoad_()
     const video = this.video_
-    this.source_ = source ? source.getSource() : this.option.source.getSource()
-    video.appendChild(this.source_)
+    this.source_ = source ? source : this.option.source
+    const type = this.sourceType =  this.source_.getType()
+    switch (type) {
+      case sourceType.MP4:
+        video.appendChild(this.source_.getSource())
+        break
+      case sourceType.M3U8:
+        this.source_.getSource().attachMedia(video)
+        break
+      default:
+        break
+    }
     video.ontimeupdate = null
     video.ontimeupdate = () => {
     //   console.log(video.currentTime)
@@ -446,6 +464,10 @@ class Videopc extends Target {
    */
   play_ () {
     this.video_.play()
+    // 如果是直播，则直接加载到最后
+    if (this.sourceType === sourceType.M3U8) {
+      this.setCurrentTime_(this.getAllTime_())
+    }
   }
 
   /**
@@ -895,6 +917,9 @@ class Videopc extends Target {
         break
       case EventType.PAUSE:
         this.rollBarrage_ = false
+        break
+      case EventType.WAITING:
+        this.showLoad_()
         break
       case EventType.ENTER_PIP:
         document.getElementById('sv-hzh').innerHTML = '画中画使用中'

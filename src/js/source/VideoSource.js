@@ -1,11 +1,24 @@
+import Hls from 'hls.js'
+import sourceType from './sourceType'
 class VideoSource {
   constructor (videoSourceOption = {}) {
     const defaultOption = {
-      'src': ''
+      'src': '',
+      'type': sourceType.MP4 // mp4 m3u8
     }
     this.option = Object.assign({}, defaultOption, videoSourceOption)
     this.source_ = null
-    this.createSource_()
+    switch (this.getType()) {
+      case sourceType.MP4:
+        this.createSource_()
+        break
+      case sourceType.M3U8:
+        this.createHls_()
+        break
+      default:
+        break
+    }
+    
   }
 
   /**
@@ -19,6 +32,19 @@ class VideoSource {
   }
 
   /**
+   * @description 生成HLS资源
+   *
+   * @memberof VideoSource
+   */
+  createHls_ () {
+    if (Hls.isSupported()) {
+      const hls = new Hls()
+      hls.loadSource(this.option.src)
+      const source = this.source_ = hls
+    }
+  }
+
+  /**
    * @description 获取资源
    *
    * @returns
@@ -26,6 +52,16 @@ class VideoSource {
    */
   getSource () {
     return this.source_
+  }
+
+  /**
+   * @description 获取资源类型
+   *
+   * @returns
+   * @memberof VideoSource
+   */
+  getType () {
+    return this.option.type
   }
 
 }
