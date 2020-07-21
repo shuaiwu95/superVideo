@@ -11,6 +11,7 @@
 .sv-target video {
     background-color: #000000;
     object-fit: fill;
+    cursor: pointer;
 }
 
 .sv-font {
@@ -56,7 +57,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 54px;
+    height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: row;
@@ -90,7 +91,7 @@
     margin-left: 10px;
 }
 
-.sv-control-r button.showMute {
+.sv-control-r .showMute {
     background: none;
     border: none;
     cursor: pointer;
@@ -101,6 +102,10 @@
     font: inherit;
     line-height: inherit;
     position: relative;
+}
+.showMute span:nth-child(1) {
+    display: block;
+    padding: 20px 0;
 }
 
 .sv-time {
@@ -170,7 +175,8 @@
 
 .sv-progressBar {
     position: absolute;
-    top: 0;
+    /* top: 0; */
+    bottom: 60px;
     left: 2%;
     width: 96%;
     height: 2px;
@@ -230,14 +236,268 @@
     z-index: 9999999!important;
 }
 
-.sv-loading{
-    /* width: 60px;
-    height: 60px; */
+/* loading */
+.sv-container-loading {
+    width: 40vw;
+    height: 40vw;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  .sv-common {
+    height: 5vw;
+    max-height: 100%;
+    overflow: auto;
+    width: 2vw;
+    margin: auto;
+    max-width: 100%;
+    position: absolute;
+    border-radius: 0vw 10vw 0vw 10vw;
+    box-shadow: inset 0vw 0vw 0vw .1vw #E645D0, 0vw 0vw 1.5vw 0vw #E645D0;
+  }
+  
+  .sv-one {
+    transform: rotate(45deg);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 7.5vw;
+  }
+  
+  .sv-two {
+    transform: rotate(90deg);
+    left: 5.5vw;
+    right: 0;
+    top: 0;
+    bottom: 5.5vw;
+  }
+  
+  .sv-three {
+    transform: rotate(135deg);
+    left: 7.5vw;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .sv-four {
+    transform: rotate(180deg);
+    left: 5.5vw;
+    right: 0;
+    top: 5.5vw;
+    bottom: 0;
+  }
+  
+  .sv-five {
+    transform: rotate(225deg);
+    left: 0;
+    right: 0;
+    top: 7.5vw;
+    bottom: 0;
+  }
+  
+  .sv-six {
+    transform: rotate(270deg);
+    left: 0;
+    right: 5.5vw;
+    top: 5.5vw;
+    bottom: 0;
+  }
+  
+  .sv-seven {
+    transform: rotate(315deg);
+    left: 0;
+    right: 7.5vw;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .sv-eight {
+    transform: rotate(360deg);
+    left: 0;
+    right: 5.5vw;
+    top: 0;
+    bottom: 5.5vw;
+  }
+  
+  .sv-one {
+    animation: one 1s ease infinite;
+    -moz-animation: one 1s ease infinite;
+    /* Firefox */
+    -webkit-animation: one 1s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: one 1s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes one {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-two {
+    animation: two 1s .125s ease infinite;
+    -moz-animation: two 1s .125s ease infinite;
+    /* Firefox */
+    -webkit-animation: two 1s .125s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: two 1s .125s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes two {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-three {
+    animation: three 1s .25s ease infinite;
+    -moz-animation: three 1s .25s ease infinite;
+    /* Firefox */
+    -webkit-animation: three 1s .25s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: three 1s .25s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes three {
+    0%,
+    100% {}
+    50% {
+      background: ;
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-four {
+    animation: four 1s .375s ease infinite;
+    -moz-animation: four 1s .375s ease infinite;
+    /* Firefox */
+    -webkit-animation: four 1s .375s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: four 1s .375s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes four {
+    0%,
+    100% {}
+    50% {
+      background: ;
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-five {
+    animation: five 1s .5s ease infinite;
+    -moz-animation: five 1s .5s ease infinite;
+    /* Firefox */
+    -webkit-animation: five 1s .5s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: five 1s .5s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes five {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-six {
+    animation: six 1s .625s ease infinite;
+    -moz-animation: six 1s .625s ease infinite;
+    /* Firefox */
+    -webkit-animation: six 1s .625s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: six 1s .625s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes six {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-seven {
+    animation: seven 1s .750s ease infinite;
+    -moz-animation: seven 1s .750s ease infinite;
+    /* Firefox */
+    -webkit-animation: seven 1s .750s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: seven 1s .750s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes seven {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-eight {
+    animation: eight 1s .875s ease infinite;
+    -moz-animation: eight 1s .875s ease infinite;
+    /* Firefox */
+    -webkit-animation: eight 1s .875s ease infinite;
+    /* Safari and Chrome */
+    -o-animation: eight 1s .875s ease infinite;
+    /* Opera */
+  }
+  
+  @keyframes eight {
+    0%,
+    100% {}
+    50% {
+      box-shadow: inset 0vw 0vw 0vw .1vw #17E1E6, 0vw 0vw 1.5vw 0vw #17E1E6;
+    }
+  }
+  
+  .sv-container-loading {
+    animation: container 5s linear infinite;
+    -moz-animation: container 5s linear infinite;
+    /* Firefox */
+    -webkit-animation: container 5s linear infinite;
+    /* Safari and Chrome */
+    -o-animation: container 5s linear infinite;
+    /* Opera */
+  }
+  
+  @keyframes container {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  
+  
+
+/* .sv-loading{
     position: absolute;
     left: 48%;
     top: 48%;
-}
-.sv-loading span{
+} */
+/* .sv-loading span{
     display: inline-block;
     width: 4px;
     height: 100%;
@@ -246,7 +506,40 @@
     -webkit-animation: load 1s ease infinite;
     animation: load 1s ease infinite;
 }
+@keyframes load{
+    0%,100%{
+        height: 20px;
+        background: #00a1d6;
+    }
+    50%{
+        height: 40px;
+        margin: -15px 0;
+        background: lightblue;
+    }
+}
 @-webkit-keyframes load{
+    0%,100%{
+        height: 20px;
+        background: #00a1d6;
+    }
+    50%{
+        height: 40px;
+        margin: -15px 0;
+        background: lightblue;
+    }
+}
+@-o-keyframes load{
+    0%,100%{
+        height: 20px;
+        background: #00a1d6;
+    }
+    50%{
+        height: 40px;
+        margin: -15px 0;
+        background: lightblue;
+    }
+}
+@-moz-keyframes load{
     0%,100%{
         height: 20px;
         background: #00a1d6;
@@ -272,7 +565,7 @@
 .sv-loading span:nth-child(5){
     -webkit-animation-delay:0.8s;
     animation-delay:0.8s;
-}
+} */
 
 /* 弹幕 */
 .sv-brrage {
@@ -318,6 +611,14 @@
 }
 .sv-picinpic:hover {
     background: linear-gradient(90deg,#4ca9c7 0,#03bbf7)!important
+}
+
+/* 暂停按钮 */
+.sv-svgPause {
+    position: absolute;
+    right: 34px;
+    bottom: 70px;
+    cursor: pointer;
 }.sv-el-control-style {
     padding-right: 10px;
     padding-left: 10px;
@@ -341,6 +642,10 @@
     outline: none;
     text-align: inherit;
     position: relative;
+}
+.sv-speedBtn span:nth-child(1) {
+    display: block;
+    padding: 20px 0;
 }
 .sv-speedBtn .sv-speed-btn {
     position: absolute;

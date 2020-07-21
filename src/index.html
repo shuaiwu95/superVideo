@@ -20,7 +20,7 @@
         height: 500px;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 20px;
+        margin-top: 80px;
       }
       #videoContainer2 {
         width: 800px;
@@ -39,10 +39,10 @@
     <noscript>
       <strong>We're sorry but soucecode doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <h3>MP4播放</h3>
+    <!-- <h3>MP4播放</h3> -->
     <div id="videoContainer"></div>
-    <h3>m3u8播放-CCTV1直播</h3>
-    <div id="videoContainer2"></div>
+    <!-- <h3>m3u8播放-CCTV1直播</h3> -->
+    <!-- <div id="videoContainer2"></div> -->
     <!-- built files will be auto injected -->
 </body>
   <script>
@@ -81,27 +81,27 @@
     video.addBarrage('冲鸭~~~~~~')
     video.addBarrage('奥里给！！！！！！')
 
-    // hls 格式
-    var fullScreenControl2 = new Super.FullScreenControl() // 实例化“全屏”控件
-    var BarrageControl2 = new Super.BarrageControl() // 弹幕控件
-    var video2 = new Super.Svideo('videoContainer2', {
-        rightControls: [fullScreenControl2], // 控件栏右槽插入控件
-        centerControls: [BarrageControl2], // 弹幕控件插入中间插槽
-        source: new Super.VideoSource({ // 引入视频资源
-          type: 'm3u8',
-          src: 'http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8'
-        })
-    })
-    // video2.addEventListener('ready', function () {
-    //   // 解决无法自动播放的问题
-    //   video2.setMuted()
-    //   video2.play()
-    //   var timer = setTimeout(() => {
-    //     video2.setMuted(false)
-    //   }, 0)
+    // // hls 格式
+    // var fullScreenControl2 = new Super.FullScreenControl() // 实例化“全屏”控件
+    // var BarrageControl2 = new Super.BarrageControl() // 弹幕控件
+    // var video2 = new Super.Svideo('videoContainer2', {
+    //     rightControls: [fullScreenControl2], // 控件栏右槽插入控件
+    //     centerControls: [BarrageControl2], // 弹幕控件插入中间插槽
+    //     source: new Super.VideoSource({ // 引入视频资源
+    //       type: 'm3u8',
+    //       src: 'http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8'
+    //     })
     // })
-    video2.addBarrage(new Super.Barrage('一定要仔细看文档！！！很多好用的功能哦~', {
-      color: 'red'
-    }))
+    // // video2.addEventListener('ready', function () {
+    // //   // 解决无法自动播放的问题
+    // //   video2.setMuted()
+    // //   video2.play()
+    // //   var timer = setTimeout(() => {
+    // //     video2.setMuted(false)
+    // //   }, 0)
+    // // })
+    // video2.addBarrage(new Super.Barrage('一定要仔细看文档！！！很多好用的功能哦~', {
+    //   color: 'red'
+    // }))
   </script>
 </html>

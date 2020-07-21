@@ -24,7 +24,7 @@ class Dbspeen extends Control {
     }
   }
   create_ () {
-    const speed = this.speed_ = document.createElement('button')
+    const speed = this.speed_ = document.createElement('div')
     speed.className = 'sv-speedBtn sv-font sv-next'
     const span = this.span_ = document.createElement('span')
     speed.appendChild(span)
@@ -66,9 +66,16 @@ class Dbspeen extends Control {
       }, 500)
     }
 
-    speedControl.onmouseover = () => {
+    speedControl.onmouseover = (event) => {
       speedControl.classList.remove('hide')
+      if (this.video_.timer_ !== null) {
+        clearTimeout(this.video_.timer_)
+      }
+      this.video_.control_.classList.remove('hide')
+      this.video_.progressBar_.classList.remove('hide')
       clearTimeout(timer)
+      const evt = event || window.event
+      evt.stopPropagation()
     }
     speedControl.onmouseleave = () => {
       speedControl.classList.remove('hide')

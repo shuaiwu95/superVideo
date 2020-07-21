@@ -24,6 +24,7 @@ class Videopc extends Target {
     super()
     this.option = Object.assign({}, defaultOption, videopcOption)
     this.rollBarrage_ = false
+    this.timer_ = null
     this.createElement_()
   }
 
@@ -78,6 +79,68 @@ class Videopc extends Target {
 
     // events
     this.listenerEvents_()
+    // 暂停按钮
+    this.pauseMenu_(targetElement)
+    // 为video绑定事件
+    this.bindEventVideo_()
+  }
+
+  /**
+   * @description 为video绑定事件
+   *
+   * @memberof Videopc
+   */
+  bindEventVideo_ () {
+    this.video_.onclick = () => {
+      if (this.isPlay_()) {
+        this.pause_()
+      } else {
+        this.play_()
+      }
+    }
+    const videoEvent = () => {
+      this.control_.classList.remove('hide')
+      this.progressBar_.classList.remove('hide')
+      if (this.timer_ !== null) {
+        clearTimeout(this.timer_)
+      }
+      this.timer_ = setTimeout(() => {
+        this.control_.classList.add('hide')
+        this.progressBar_.classList.add('hide')
+        clearTimeout(this.timer_)
+      }, 2000)
+    }
+    this.video_.onmousemove = videoEvent
+    this.svgPause_.onmousemove = videoEvent
+    this.control_.onmouseover = (event) => {
+      if (this.timer_ !== null) {
+        clearTimeout(this.timer_)
+      }
+      this.control_.classList.remove('hide')
+      this.progressBar_.classList.remove('hide')
+      let evt = event || window.event
+      evt.stopPropagation()
+    }
+    this.option.target.onmouseout = () => {
+      this.control_.classList.add('hide')
+      this.progressBar_.classList.add('hide')
+    }
+  }
+
+  /**
+   * @description 生成暂停按钮
+   *
+   * @memberof Videopc
+   */
+  pauseMenu_ (targetElement) {
+    const svg = '<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><filter x="-11.2%" y="-10.8%" width="122.4%" height="125.5%" filterUnits="objectBoundingBox" id="pid-1-svgo-a"><feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" in="shadowBlurOuter1"></feColorMatrix></filter><path d="M52.352 13.5c4.837 0 8.707 4.32 8.647 9.72v21.06C61 49.62 57.128 54 52.29 54h-2.479c0 1.681-1.452 3-3.206 3S43.4 55.62 43.4 54H20.841c0 1.681-1.452 3-3.204 3-1.756 0-3.206-1.38-3.206-3h-2.722C6.87 54 3 49.68 3 44.28V23.22c0-5.4 3.87-9.72 8.709-9.72h11.25l-4.78-4.44c-.725-.661-.725-1.8 0-2.52.424-.36.908-.54 1.391-.54.546 0 1.029.18 1.392.54l7.5 6.96h7.318l7.5-6.96c.422-.36.907-.54 1.39-.54.544 0 1.029.18 1.392.54.725.659.725 1.8 0 2.52l-4.78 4.44h11.07zM26.527 45.54l17.418-10.08c1.45-.901 1.45-2.221 0-3.122L26.527 22.2c-1.452-.84-2.662-.12-2.662 1.56v20.22c0 1.74 1.21 2.4 2.662 1.561z" id="pid-1-svgo-b"></path></defs><g fill="none" fill-rule="evenodd"><use fill="#000" filter="url(#pid-1-svgo-a)" xlink:href="#pid-1-svgo-b"></use><use fill-opacity=".7" fill="#FFF" xlink:href="#pid-1-svgo-b"></use><path d="M26.527 45.541c-1.452.84-2.662.18-2.662-1.56V23.76c0-1.68 1.21-2.4 2.662-1.56L43.945 32.34c1.45.9 1.45 2.22 0 3.121L26.527 45.541z" fill="#000" opacity=".06"></path></g></svg>'
+    const svgPause_ = this.svgPause_ = document.createElement('span')
+    svgPause_.className = 'sv-svgPause'
+    svgPause_.innerHTML = svg
+    targetElement.appendChild(svgPause_)
+    svgPause_.onclick = () => {
+      this.play_()
+    }
   }
 
   /**
@@ -87,7 +150,7 @@ class Videopc extends Target {
    */
   createControlContainer_ (targetElement) {
     const control = this.control_ = document.createElement('div')
-    control.className = 'sv-control'
+    control.className = 'sv-control hide'
     targetElement.appendChild(control)
     // playMenu container
     const playContainer = document.createElement('div')
@@ -131,7 +194,7 @@ class Videopc extends Target {
     const controlRight = this.controlRight_ = document.createElement('div')
     controlRight.className='sv-control-r'
     control.appendChild(controlRight)
-    const muteMenu = this.muteMenu_ = document.createElement('button')
+    const muteMenu = this.muteMenu_ = document.createElement('div')
     muteMenu.className = 'showMute'
     controlRight.appendChild(muteMenu)
     const muteInner = this.muteInner_ = document.createElement('span')
@@ -163,8 +226,8 @@ class Videopc extends Target {
     muteSlider.appendChild(muteSliderButton)
     // 进度条
     const progressBar = this.progressBar_ = document.createElement('div')
-    progressBar.className = 'sv-progressBar'
-    control.appendChild(progressBar)
+    progressBar.className = 'sv-progressBar hide'
+    targetElement.appendChild(progressBar)
     const cacheProgress = this.cacheProgress_ = document.createElement('div')
     cacheProgress.className = 'sv-cacheProgress'
     progressBar.appendChild(cacheProgress)
@@ -172,7 +235,7 @@ class Videopc extends Target {
     progressNum.className = 'sv-progressNum'
     progressBar.appendChild(progressNum)
     const progressBtn = this.progressBtn_ = document.createElement('div')
-    progressBtn.className = 'sv-progressBtn'
+    progressBtn.className = 'sv-progressBtn hide'
     const progressBtnInside = document.createElement('div')
     progressBtn.appendChild(progressBtnInside)
     progressBar.appendChild(progressBtn)
@@ -215,6 +278,9 @@ class Videopc extends Target {
       picinpic.classList.add('hide')
     }
     if (!this.option.showPictureInPicture || !isChrome) {
+      picinpic.classList.add('hide')
+    }
+    if (typeof this.video_.requestPictureInPicture !== 'function') {
       picinpic.classList.add('hide')
     }
 
@@ -272,9 +338,16 @@ class Videopc extends Target {
     // 控制进度条
     progressBar.onmouseover = () => {
       progressBar.style.height = '4px'
+      progressBtn.classList.remove('hide')
+      if (this.timer_ !== null) {
+        clearTimeout(this.timer_)
+      }
+      this.control_.classList.remove('hide')
+      this.progressBar_.classList.remove('hide')
     }
     progressBar.onmouseout = () => {
       progressBar.style.height = '2px'
+      progressBtn.classList.add('hide')
     }
     progressBtn.onmousedown = (e) => {
       // 获取鼠标按下的坐标
@@ -295,6 +368,8 @@ class Videopc extends Target {
         const allTime = this.getAllTime_()
         progressTime = allTime * fenbi
         this.timeStart_.innerHTML = formatSeconds(progressTime)
+        progressBtn.classList.remove('hide')
+        progressBar.style.height = '4px'
         ev.preventDefault()
       }
       document.onmouseup = () => {
@@ -303,6 +378,8 @@ class Videopc extends Target {
         this.play_()
         this.setCurrentTime_(progressTime)
         this.clearBarrages_()
+        progressBar.style.height = '2px'
+        progressBtn.classList.add('hide')
       }
       e.preventDefault()
     }
@@ -386,25 +463,7 @@ class Videopc extends Target {
       // 判断是否静音
       this.setMuteIcon_()
       // 进度条数据
-      const allTime = this.getAllTime_()
-      if (allTime > 0) {
-        for (let i = 0; i < video.buffered.length; i++) {
-          // 寻找当前时间之后最近的点
-          if (video.buffered.start(video.buffered.length - 1 - i) < video.currentTime) {
-            let bufferedLength = video.buffered.end(video.buffered.length - 1 - i) / allTime * 100 +
-                  '%'
-            this.cacheProgress_.style.width = bufferedLength
-            break
-          }
-        }
-        const nowTime = this.getCurrentTime_()
-        this.progressNum_.style.width = `${nowTime/allTime * 100}%`
-        const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
-        if (this.isReady_()) {
-          this.progressBtn_.style.left = `${btnLen}px`
-        }
-      }
-      this.hideLoad_()
+      this.setProgressBarStyle_()
     }
     // 获取视频总时长
     const timer = setInterval(() => {
@@ -418,13 +477,40 @@ class Videopc extends Target {
     })
   }
 
+  setProgressBarStyle_ (video=this.video_) {
+    const allTime = this.getAllTime_()
+    if (allTime > 0) {
+      for (let i = 0; i < video.buffered.length; i++) {
+        // 寻找当前时间之后最近的点
+        if (video.buffered.start(video.buffered.length - 1 - i) < video.currentTime) {
+          let bufferedLength = video.buffered.end(video.buffered.length - 1 - i) / allTime * 100 +
+                '%'
+          this.cacheProgress_.style.width = bufferedLength
+          break
+        }
+      }
+      const nowTime = this.getCurrentTime_()
+      this.progressNum_.style.width = `${nowTime/allTime * 100}%`
+      const btnLen = this.progressBar_.clientWidth * (nowTime/allTime)
+      if (this.isReady_()) {
+        this.progressBtn_.style.left = `${btnLen}px`
+        this.hideLoad_()
+      }
+    }
+  }
+
   createLoading_ () {
     const div = `
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
+    <div class="sv-container-loading">
+			<div class="sv-one sv-common"></div>
+			<div class="sv-two sv-common"></div>
+			<div class="sv-three sv-common"></div>
+			<div class="sv-four sv-common"></div>
+			<div class="sv-five sv-common"></div>
+			<div class="sv-six sv-common"></div>
+			<div class="sv-seven sv-common"></div>
+			<div class="sv-eight sv-common"></div>
+		</div>
     `
     const objE = this.loading_ = document.createElement('div')
     objE.innerHTML = div
@@ -463,6 +549,7 @@ class Videopc extends Target {
    * @memberof Videopc
    */
   play_ () {
+    this.showLoad_()
     this.video_.play()
     // 如果是直播，则直接加载到最后
     if (this.sourceType === sourceType.M3U8) {
@@ -716,6 +803,7 @@ class Videopc extends Target {
       element.webkitRequestFullScreen()
     }
     this.option.target.classList.add('sv-full-screen')
+    this.setProgressBarStyle_()
     this.videoEvent_(EventType.FULL_SCREEN)
   }
 
@@ -734,6 +822,7 @@ class Videopc extends Target {
       de.webkitCancelFullScreen()
     }
     this.option.target.classList.remove('sv-full-screen')
+    this.setProgressBarStyle_()
     this.videoEvent_(EventType.CANCEL_FULL_SCREEN)
   }
 
@@ -836,10 +925,18 @@ class Videopc extends Target {
     const barrages = document.getElementsByClassName('sv-brrage')
     for (let i = 0; i < barrages.length;i ++){
       const barrage = barrages[i]
-      this.option.target.removeChild(barrage)
+      try {
+        this.option.target.removeChild(barrage)
+      } catch (error) {
+        
+      }
     }
     if (barrages.length > 0) {
-      this.clearBarrages_()
+      try {
+        this.clearBarrages_()
+      } catch (error) {
+        
+      }
     }
   }
 
@@ -914,9 +1011,14 @@ class Videopc extends Target {
         break
       case EventType.PLAY:
         this.rollBarrage_ = true
+        this.svgPause_.classList.add('hide')
         break
       case EventType.PAUSE:
         this.rollBarrage_ = false
+        this.svgPause_.classList.remove('hide')
+        break
+      case  EventType.LOADED_METADATA:
+        this.hideLoad_()
         break
       case EventType.WAITING:
         this.showLoad_()

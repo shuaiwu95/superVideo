@@ -22,6 +22,10 @@
     text-align: inherit;
     position: relative;
 }
+.sv-speedBtn span:nth-child(1) {
+    display: block;
+    padding: 20px 0;
+}
 .sv-speedBtn .sv-speed-btn {
     position: absolute;
     bottom: 54px;

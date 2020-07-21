@@ -40,7 +40,7 @@ class VideoSource {
     if (Hls.isSupported()) {
       const hls = new Hls()
       hls.loadSource(this.option.src)
-      const source = this.source_ = hls
+      this.source_ = hls
     }
   }
 
