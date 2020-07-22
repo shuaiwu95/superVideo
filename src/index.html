@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>super video</title>
+    <title>superVideo使用教程</title>
     <style>
       html,body {
         width: 100%;
@@ -15,6 +15,7 @@
         padding: 0;
         margin: 0;
       }
+       /* 设置视频外部容器样式 */
       #videoContainer {
         width: 800px;
         height: 500px;
@@ -22,86 +23,126 @@
         margin-right: auto;
         margin-top: 80px;
       }
-      #videoContainer2 {
-        width: 800px;
-        height: 500px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-      }
-      h3 {
-        margin-left: 300px;
-        margin-right: auto;
-        color: #ffffff;
-      }
     </style>
   <body>
     <noscript>
       <strong>We're sorry but soucecode doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <!-- <h3>MP4播放</h3> -->
+    <!-- 设置视频插件容器 -->
     <div id="videoContainer"></div>
-    <!-- <h3>m3u8播放-CCTV1直播</h3> -->
-    <!-- <div id="videoContainer2"></div> -->
-    <!-- built files will be auto injected -->
 </body>
   <script>
-    // mp4
-    var nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
-    var Dbspeen = new Super.DbspeenControl() // 倍速控件
-    var BarrageControl = new Super.BarrageControl() // 弹幕控件
-    var fullScreenControl = new Super.FullScreenControl() // 实例化“全屏”控件
-    var video = new Super.Svideo('videoContainer', {
-        source: new Super.VideoSource({ // 引入视频资源
-          type: 'mp4',
-          src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
-        }),
-        leftControls: [nextControl], // 控件栏左槽插入控件
-        rightControls: [Dbspeen, fullScreenControl], // 控件栏右槽插入控件
-        centerControls: [BarrageControl] // 弹幕控件插入中间插槽
+    /* 以下将定义视频插件常用的几个控件 */
+    // 实例化一个“下一个”按钮控件
+    var nextControl = new Super.NextControl()
+    // 实例化一个倍速控件
+    var Dbspeen = new Super.DbspeenControl()
+    // 实例化一个弹幕输入框控件
+    var BarrageControl = new Super.BarrageControl()
+    // 实例化一个全屏按钮控件
+    var fullScreenControl = new Super.FullScreenControl()
+    // 实例化视频播放资源
+    var source = new Super.VideoSource({
+      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8)
+      // src: 视频路径，可以是本地路径亦可是网络路径
+      type: 'mp4',
+      src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
     })
-    video.addEventListener('change', function(event) { // 监听video各属性变化
-      //  console.log(event)
-    })
-    nextControl.addEventListener('click', function(event) { // 监听“下一个”按钮控件点击事件
+
+    /* 插件的常用配置参数 */
+    var config = {
+      // 是否自动播放（该功能受限于浏览器安全策略，可能会失效，解决思路为初始化时设置为静音，加载完毕后取消静音）
+      autoplay: false,
+      currentTime: 0, // 设置视频初始播放时间，单位为秒
+      loop: false, // 是否循环播放
+      muted: false, // 是否默认静音
+      playbackRate: 1, // 视频默认播放速度
+      poster: '', // 视频首帧图片路径
+      volume: 0.5, // 视频默认音量 0-1
+      showPictureInPicture: true, // 是否启用画中画模式按钮（>=Chrome10有效）
+      source: source, // 为视频插件设置资源
+      leftControls: [nextControl], // 在底部控件栏左侧插入 “下一个”按钮控件
+      rightControls: [Dbspeen, fullScreenControl], // 在底部控件栏左侧插入 “倍速” 控件和 “全屏” 控件
+      centerControls: [BarrageControl] // 在底部控件栏中间插入 “弹幕输入控件”
+    }
+
+    //初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
+    var video = new Super.Svideo('videoContainer', config)
+
+    /* 以下是控件类常用的监听事件 */
+
+    // 监听“下一个”按钮控件点击事件
+    nextControl.addEventListener('click', function(event) {
       alert('click next menu !!!')
     })
-    fullScreenControl.addEventListener('fullscreen', function(event) { // 监听进入全屏
+    // 监听进入全屏模式后触发（点击进入全屏按钮）
+    fullScreenControl.addEventListener('fullscreen', function(event) {
       console.log('is fullscreen !!!')
     })
-    fullScreenControl.addEventListener('cancelfullscreen', function(event) { // 监听退出全屏
+    // 监听退出全屏模式后触发（点击退出全屏按钮）
+    fullScreenControl.addEventListener('cancelfullscreen', function(event) {
       console.log('cancel fullscreen !!!')
     })
+    // 监听发送弹幕输入框输入并发送弹幕后触发
+    BarrageControl.addEventListener('send', function(event) {
+      var value = event.target.option.value
+      console.log('send ' + value)
+    })
+
+    /* 以下是video类常用的监听事件 */
+    // 视频准备就绪
+    video.addEventListener('ready', function() {
+      console.log('is ready!')
+    })
+    // 开始播放
+    video.addEventListener('play', function() {
+      console.log('is play!')
+    })
+    // 暂停播放
+    video.addEventListener('pause', function() {
+      console.log('is pause!')
+    })
+    // 监听进入全屏模式后触发
     video.addEventListener('fullscreen', function(event) {
       console.log('is fullscreen !!!')
     })
-    video.addBarrage(new Super.Barrage('6666666666', {
-      color: 'red'
-    }))
+    // 监听退出全屏模式后触发
+    video.addEventListener('cancelfullscreen', function(event) {
+      console.log('cancel fullscreen !!!')
+    })
+
+    /* 下面将演示弹幕类的用法 */
+
+    // 初始化一个弹幕实例
+    var barrage1 = new Super.Barrage('我是一条红色的超大号字体弹幕', {
+      color: 'red',
+      fontSize: 30
+    })
+    // 将该弹幕加入播放器插件
+    video.addBarrage(barrage1)
+
+    // 还可以在弹幕中插入一些dom节点
+    var vipDom = document.createElement('span')
+    vipDom.innerHTML = 'V'
+    vipDom.style.color = 'green'
+    vipDom.style.fontSize = '20px'
+    vipDom.style.fontWeight = '600'
+    vipDom.style.marginRight = '4px'
+    var barrage2 = new Super.Barrage('我是超级会员VIP', {
+      color: 'orange',
+      fontSize: 15,
+      leftDom: vipDom // 将DOM插入弹幕左侧
+    })
+    video.addBarrage(barrage2)
+
+    // 当然也可以这样简单的使用
     video.addBarrage('冲鸭~~~~~~')
     video.addBarrage('奥里给！！！！！！')
 
-    // // hls 格式
-    // var fullScreenControl2 = new Super.FullScreenControl() // 实例化“全屏”控件
-    // var BarrageControl2 = new Super.BarrageControl() // 弹幕控件
-    // var video2 = new Super.Svideo('videoContainer2', {
-    //     rightControls: [fullScreenControl2], // 控件栏右槽插入控件
-    //     centerControls: [BarrageControl2], // 弹幕控件插入中间插槽
-    //     source: new Super.VideoSource({ // 引入视频资源
-    //       type: 'm3u8',
-    //       src: 'http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8'
-    //     })
-    // })
-    // // video2.addEventListener('ready', function () {
-    // //   // 解决无法自动播放的问题
-    // //   video2.setMuted()
-    // //   video2.play()
-    // //   var timer = setTimeout(() => {
-    // //     video2.setMuted(false)
-    // //   }, 0)
-    // // })
-    // video2.addBarrage(new Super.Barrage('一定要仔细看文档！！！很多好用的功能哦~', {
-    //   color: 'red'
-    // }))
+    /*
+      说在最后：
+      superVideo还有许多实用的方法/事件/属性，想深入使用的请参考API文档 —— https://hulalalalala.github.io/superVideo/api/index.html
+      开源不易，希望各位爱心人士点个STAR支持以下 —— https://github.com/hulalalalala/superVideo
+    */
   </script>
 </html>
