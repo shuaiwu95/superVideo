@@ -61,12 +61,12 @@ npm run build
     var video = new Super.Svideo('videoContainer', config)
 ```
 
+**事件监听**<br/>
+支持原生video对象的所有事件监听
+
 **感谢**<br/>
 superVideo 的hls 和 flv 格式的视频解码全部依托于 hls.js 与 flv.js<br/>
 感谢开发这两个视频解码开源库的大神
-
-**事件监听**<br/>
-支持原生video对象的所有事件监听
 
 **联系作者**<br/>
 shuaiwu123@foxmail.com<br/>
