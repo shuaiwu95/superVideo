@@ -1,4 +1,5 @@
 import Hls from 'hls.js'
+import Flvjs from 'flv.js'
 import sourceType from './sourceType'
 class VideoSource {
   constructor (videoSourceOption = {}) {
@@ -14,6 +15,9 @@ class VideoSource {
         break
       case sourceType.M3U8:
         this.createHls_()
+        break
+      case sourceType.FLV:
+        this.createFlv_()
         break
       default:
         break
@@ -41,6 +45,21 @@ class VideoSource {
       const hls = new Hls()
       hls.loadSource(this.option.src)
       this.source_ = hls
+    }
+  }
+
+ /**
+   * @description 生成FLV资源
+   *
+   * @memberof VideoSource
+   */
+  createFlv_ () {
+    if (Flvjs.isSupported()) {
+      const flvPlayer = Flvjs.createPlayer({
+        type: 'flv',
+        url: this.option.src
+      })
+      this.source_ = flvPlayer
     }
   }
 

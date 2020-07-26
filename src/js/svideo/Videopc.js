@@ -100,7 +100,9 @@ class Videopc extends Target {
     }
     const videoEvent = () => {
       this.control_.classList.remove('hide')
-      this.progressBar_.classList.remove('hide')
+      if (this.sourceType !== sourceType.M3U8 && this.sourceType !== sourceType.FLV) {
+        this.progressBar_.classList.remove('hide')
+      }
       if (this.timer_ !== null) {
         clearTimeout(this.timer_)
       }
@@ -117,7 +119,9 @@ class Videopc extends Target {
         clearTimeout(this.timer_)
       }
       this.control_.classList.remove('hide')
-      this.progressBar_.classList.remove('hide')
+      if (this.sourceType !== sourceType.M3U8 && this.sourceType !== sourceType.FLV) {
+        this.progressBar_.classList.remove('hide')
+      }
       let evt = event || window.event
       evt.stopPropagation()
     }
@@ -283,9 +287,8 @@ class Videopc extends Target {
     if (typeof this.video_.requestPictureInPicture !== 'function') {
       picinpic.classList.add('hide')
     }
-
     // 如果是直播流，则隐藏进度条
-    if (this.sourceType === sourceType.M3U8) {
+    if (this.sourceType === sourceType.M3U8 || this.sourceType === sourceType.FLV) {
       this.progressBar_.classList.add('hide')
       timeRang.classList.add('hide')
     }
@@ -444,6 +447,11 @@ class Videopc extends Target {
         break
       case sourceType.M3U8:
         this.source_.getSource().attachMedia(video)
+        break
+      case sourceType.FLV:
+        const flvPlayer = this.source_.getSource()
+        flvPlayer.attachMediaElement(video)
+        flvPlayer.load()
         break
       default:
         break
