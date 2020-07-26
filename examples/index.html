@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="cn"><head><link href="css/main-css.css" rel="stylesheet"></head>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>superVideo使用教程</title>
-    <!--main-css.css视频插件核心样式文件，必须正确调用对应路径-->
-    <link href="css/main-css.css" rel="stylesheet">
     <style>
       html,body {
         width: 100%;
@@ -17,7 +15,7 @@
         padding: 0;
         margin: 0;
       }
-      /* 设置视频外部容器样式 */
+       /* 设置视频外部容器样式 */
       #videoContainer {
         width: 800px;
         height: 500px;
@@ -27,10 +25,12 @@
       }
     </style>
   <body>
+    <noscript>
+      <strong>We're sorry but soucecode doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <!-- 设置视频插件容器 -->
     <div id="videoContainer"></div>
-    <!--superVideo.js视频插件核心文件，必须正确调用对应路径-->
-    <script type="text/javascript" src="superVideo.js"></script></body>
+<script type="text/javascript" src="superVideo.js"></script></body>
   <script>
     /* 以下将定义视频插件常用的几个控件 */
     // 实例化一个“下一个”按钮控件
@@ -43,7 +43,7 @@
     var fullScreenControl = new Super.FullScreenControl()
     // 实例化视频播放资源
     var source = new Super.VideoSource({
-      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8)
+      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8) flv: 可播放flv视频
       // src: 视频路径，可以是本地路径亦可是网络路径
       type: 'mp4',
       src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
@@ -52,7 +52,7 @@
     /* 插件的常用配置参数 */
     var config = {
       // 是否自动播放（该功能受限于浏览器安全策略，可能会失效，解决思路为初始化时设置为静音，加载完毕后取消静音）
-      autoplay: true,
+      autoplay: false,
       currentTime: 0, // 设置视频初始播放时间，单位为秒
       loop: false, // 是否循环播放
       muted: false, // 是否默认静音
@@ -68,8 +68,7 @@
 
     //初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
     var video = new Super.Svideo('videoContainer', config)
-    // 顺便写下解决无法自动播放的思路：设置静音，视频就绪后取消静音，自动播放便可以生效（听说腾讯视频就是这么干的）
-    video.setMuted(true) // 设置静音模式
+
     /* 以下是控件类常用的监听事件 */
 
     // 监听“下一个”按钮控件点击事件

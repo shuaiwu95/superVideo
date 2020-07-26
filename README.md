@@ -1,9 +1,9 @@
 ## SuperVideo - H5视频播放插件 ##
 **简介**
 
-SuperVideo是一款H5视频播放插件，基于H5 video 对象开发。
-该项目用ES6语法编写，可将源码嵌入您的项目按需引用也可以打包后引用。
-SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为 SuperVideo 1.0测试版本，当前api是不稳定的并有可能随时发生变化。
+SuperVideo是一款基于 H5 video 开发的视频播放插件。
+该项目用ES6语法编写,webpack打包。
+SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为 SuperVideo 1.0.7测试版本，当前api是不稳定的并有可能随时发生变化。
 
 **示例**<br/>
 [DEMO][https://hulalalalala.github.io/superVideo/examples/index.html]
@@ -24,72 +24,46 @@ npm run build
 ```
 编写代码
 ```
-const nextControl = new Super.NextControl() // 实例化“下一个”按钮控件
-const Dbspeen = new Super.Dbspeen() // 倍速控件
-const fullScreenControl = new Super.FullScreenControl() // 实例化“全屏”控件
-const video = new Super.Svideo('videoContainer', {
-    source: new Super.VideoSource({ // 引入视频资源
-        src: 'test.mp4'
-    }),
-    leftControls: [nextControl], // 控件栏左槽插入控件
-    rightControls: [Dbspeen, fullScreenControl] // 控件栏右槽插入控件
-})
-video.addEventListener('change', (event) => { // 监听video各属性变化
-    // console.log(event)
-})
-nextControl.addEventListener('click', () => { // 监听“下一个”按钮控件点击事件
-    alert('click next menu !!!')
-})
-fullScreenControl.addEventListener('fullscreen', () => { // 监听进入全屏
-    console.log('is fullscreen !!!')
-})
-fullScreenControl.addEventListener('cancelfullscreen', () => { // 监听退出全屏
-    console.log('cancel fullscreen !!!')
-})
-```
-
-**ES6方式引用**<br/>
-将项目SRC文件下的JS和CSS文件放入您的项目，然后import按需引入核心类，资源类，控件类即可<br/>
-```
-import Svideo from 'Svideo'
-import VideoSource from 'VideoSource'
-
-const video = new Svideo('videoContainer', {
-    source: new VideoSource({ // 引入视频资源
-        src: 'test.mp4'
+// 实例化一个“下一个”按钮控件
+    var nextControl = new Super.NextControl()
+    // 实例化一个倍速控件
+    var Dbspeen = new Super.DbspeenControl()
+    // 实例化一个弹幕输入框控件
+    var BarrageControl = new Super.BarrageControl()
+    // 实例化一个全屏按钮控件
+    var fullScreenControl = new Super.FullScreenControl()
+    // 实例化视频播放资源
+    var source = new Super.VideoSource({
+      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8) flv: 可播放flv视频
+      // src: 视频路径，可以是本地路径亦可是网络路径
+      type: 'mp4',
+      src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
     })
-})
-```
 
-**开发自定义控件**<br/>
-编码<br/>
-```
-import Control from 'Control'
-export default class CustomControl extends Control {
-    constructor () {
-        super()
+    /* 插件的常用配置参数 */
+    var config = {
+      // 是否自动播放（该功能受限于浏览器安全策略，可能会失效，解决思路为初始化时设置为静音，加载完毕后取消静音）
+      autoplay: false,
+      currentTime: 0, // 设置视频初始播放时间，单位为秒
+      loop: false, // 是否循环播放
+      muted: false, // 是否默认静音
+      playbackRate: 1, // 视频默认播放速度
+      poster: '', // 视频首帧图片路径
+      volume: 0.5, // 视频默认音量 0-1
+      showPictureInPicture: true, // 是否启用画中画模式按钮（>=Chrome10有效）
+      source: source, // 为视频插件设置资源
+      leftControls: [nextControl], // 在底部控件栏左侧插入 “下一个”按钮控件
+      rightControls: [Dbspeen, fullScreenControl], // 在底部控件栏左侧插入 “倍速” 控件和 “全屏” 控件
+      centerControls: [BarrageControl] // 在底部控件栏中间插入 “弹幕输入控件”
     }
-    create_ () {
-        // 在这里编写控件相关代码
-    }
-} 
-```
-使用<br/>
-```
-import CustomControl from 'CustomControl'
-...
 
-const video = new Svideo('videoContainer', {
-    source: new VideoSource({ // 引入视频资源
-        src: 'test.mp4'
-    }),
-    rightControls: [new CustomControl()] // 控件栏右槽插入控件
-})
-
-// or
-
-video.addRightControl(new CustomControl())
+    //初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
+    var video = new Super.Svideo('videoContainer', config)
 ```
+
+**感谢**<br/>
+superVideo 的hls 和 flv 格式的视频解码全部依托于 hls.js 与 flv.js<br/>
+感谢开发这两个视频解码开源库的大神
 
 **事件监听**<br/>
 支持原生video对象的所有事件监听
@@ -106,5 +80,6 @@ lishuaiwu5201314@gmail.com<br/>
 
 **算法交流QQ群**<br/>
 417370175
+
 
 
