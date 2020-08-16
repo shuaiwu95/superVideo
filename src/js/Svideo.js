@@ -27,6 +27,7 @@ class Svideo extends Target{
       'poster': '', // 视频POSTER
       'volume': 1, // 音量
       'showPictureInPicture': true, // 是否显示画中画控件 该控件仅在chrome有效
+      'loadingNode': null, // 自定义加载动画
       'leftControls': [], // 左槽控件
       'rightControls': [], // 右槽控件
       'centerControls': [] // 中间插槽
@@ -75,6 +76,7 @@ class Svideo extends Target{
         'poster': this.option.poster,
         'volume': this.option.volume,
         'showPictureInPicture': this.option.showPictureInPicture,
+        'loadingNode': this.option.loadingNode,
         'leftControls': this.option.leftControls,
         'rightControls': this.option.rightControls,
         'centerControls': this.option.centerControls
@@ -93,6 +95,7 @@ class Svideo extends Target{
         'poster': this.option.poster,
         'volume': this.option.volume,
         'showPictureInPicture': this.option.showPictureInPicture,
+        'loadingNode': this.option.loadingNode,
         'leftControls': this.option.leftControls,
         'rightControls': this.option.rightControls,
         'centerControls': this.option.centerControls
@@ -136,6 +139,18 @@ class Svideo extends Target{
    */
   getContainer () {
     return this.videoTarget_
+  }
+
+  /**
+   *
+   * @description 设置视频路径
+   * @param {String} path
+   * @memberof Svideo
+   */
+  setPath (path) {
+    this.video_.video_.src = path
+    this.video_.initTimes_()
+    this.video_.clearBarrages_()
   }
 
   /**

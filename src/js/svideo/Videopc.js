@@ -507,6 +507,47 @@ class Videopc extends Target {
     }
   }
 
+  /**
+   * @description 重置视频总时长
+   *
+   * @memberof Videopc
+   */
+  initTimes_ () {
+    const video = this.video_
+    video.ontimeupdate = null
+    video.ontimeupdate = () => {
+    //   console.log(video.currentTime)
+    //   console.log(video.duration)
+      this.ontimeupdate_(video)
+      if (video.paused) { // 暂停
+        this.btnInner_.innerHTML = '&#xe60f;'
+      } else { // 开始
+        this.btnInner_.innerHTML = '&#xe693;'
+      }
+      // 获取当前播放时长
+      this.timeStart_.innerHTML = formatSeconds(this.getCurrentTime_())
+      // 判断是否静音
+      this.setMuteIcon_()
+      // 进度条数据
+      this.setProgressBarStyle_()
+    }
+    // 获取视频总时长
+    const timer = setInterval(() => {
+      if (this.video_.readyState) {
+        this.cacheProgress_.style.width = this.progressNum_.style.width = '0%'
+        this.progressBtn_.style.left = '0px'
+        this.timeEnd_.innerHTML = formatSeconds(this.getAllTime_())
+        this.onready_()
+        clearInterval(timer)
+      }
+    })
+  }
+
+  /**
+   * @description 设置loading
+   *
+   * @memberof Videopc
+   */
   createLoading_ () {
     const div = `
     <div class="sv-container-loading">
@@ -521,7 +562,17 @@ class Videopc extends Target {
 		</div>
     `
     const objE = this.loading_ = document.createElement('div')
-    objE.innerHTML = div
+    // 如果有自定义节点
+    const loadingNode = this.option.loadingNode
+    if (loadingNode !== null) {
+      if (typeof loadingNode === 'string') {
+        objE.innerHTML = loadingNode
+      } else {
+        objE.appendChild(loadingNode)
+      }
+    } else {
+      objE.innerHTML = div
+    }
     objE.className = 'sv-loading hide'
     this.option.target.appendChild(objE)
   }
