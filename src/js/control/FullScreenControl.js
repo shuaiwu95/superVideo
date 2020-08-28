@@ -11,9 +11,10 @@ class FullScreenControl extends Control {
   constructor () {
     super()
     this.isFull_ = false
+    this.type_ = 'fullScreenMenu'
   }
   create_ () {
-    const fullScreen = document.createElement('button')
+    const fullScreen = this.fullScreenBtn_ = document.createElement('button')
     fullScreen.className = 'sv-nextBtn sv-font sv-fullScreen'
     fullScreen.innerHTML = '&#xe6cc;'
     this.element_.appendChild(fullScreen)

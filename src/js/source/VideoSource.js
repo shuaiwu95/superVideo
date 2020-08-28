@@ -5,24 +5,25 @@ class VideoSource {
   constructor (videoSourceOption = {}) {
     const defaultOption = {
       'src': '',
+      'blob': false,
       'type': sourceType.MP4 // mp4 m3u8
     }
     this.option = Object.assign({}, defaultOption, videoSourceOption)
     this.source_ = null
     switch (this.getType()) {
-      case sourceType.MP4:
-        this.createSource_()
-        break
-      case sourceType.M3U8:
-        this.createHls_()
-        break
-      case sourceType.FLV:
-        this.createFlv_()
-        break
-      default:
-        break
+    case sourceType.MP4:
+      this.createSource_()
+      break
+    case sourceType.M3U8:
+      this.createHls_()
+      break
+    case sourceType.FLV:
+      this.createFlv_()
+      break
+    default:
+      break
     }
-    
+
   }
 
   /**
@@ -48,7 +49,7 @@ class VideoSource {
     }
   }
 
- /**
+  /**
    * @description 生成FLV资源
    *
    * @memberof VideoSource
@@ -56,8 +57,8 @@ class VideoSource {
   createFlv_ () {
     if (Flvjs.isSupported()) {
       const flvPlayer = Flvjs.createPlayer({
-        type: 'flv',
-        url: this.option.src
+        'type': 'flv',
+        'url': this.option.src
       })
       this.source_ = flvPlayer
     }

@@ -25,6 +25,7 @@ class Videopc extends Target {
     this.option = Object.assign({}, defaultOption, videopcOption)
     this.rollBarrage_ = false
     this.timer_ = null
+    this.isFullScreen_ = false
     this.createElement_()
   }
 
@@ -352,6 +353,11 @@ class Videopc extends Target {
       progressBar.style.height = '2px'
       progressBtn.classList.add('hide')
     }
+    // progressBar.onmousedown = (e) => {
+    //   const x = e.clientX
+    //   // const cuurTime = this.getCurrentByPx_(x)
+    //   // this.setCurrentTime_(cuurTime)
+    // }
     progressBtn.onmousedown = (e) => {
       // 获取鼠标按下的坐标
       const x = e.clientX
@@ -432,6 +438,28 @@ class Videopc extends Target {
   }
 
   /**
+   * @description 视频加密
+   *
+   * @memberof Videopc
+   */
+  xhrBlob (src) {
+    window.URL = window.URL || window.webkitURL
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', src, true)
+    xhr.responseType = 'blob'
+    xhr.onload = function() {
+      if (this.status === 200) {
+        const blob = this.response
+        this.video_.onload = function(e) {
+          window.URL.revokeObjectURL(this.video_.src)
+        }
+        this.video_.src = window.URL.createObjectURL(blob)
+      }
+    }
+    xhr.send()
+  }
+
+  /**
    * @private
    * @description 添加资源
    * @memberof Videopc
@@ -440,21 +468,26 @@ class Videopc extends Target {
     this.showLoad_()
     const video = this.video_
     this.source_ = source ? source : this.option.source
-    const type = this.sourceType =  this.source_.getType()
+    const type = this.sourceType = this.source_.getType()
     switch (type) {
-      case sourceType.MP4:
+    case sourceType.MP4:
+      // blob加密
+      if (this.source_.option.blob) {
+        this.xhrBlob(this.source_.option.src)
+      } else {
         video.appendChild(this.source_.getSource())
-        break
-      case sourceType.M3U8:
-        this.source_.getSource().attachMedia(video)
-        break
-      case sourceType.FLV:
-        const flvPlayer = this.source_.getSource()
-        flvPlayer.attachMediaElement(video)
-        flvPlayer.load()
-        break
-      default:
-        break
+      }
+      break
+    case sourceType.M3U8:
+      this.source_.getSource().attachMedia(video)
+      break
+    case sourceType.FLV:
+      const flvPlayer = this.source_.getSource()
+      flvPlayer.attachMediaElement(video)
+      flvPlayer.load()
+      break
+    default:
+      break
     }
     video.ontimeupdate = null
     video.ontimeupdate = () => {
@@ -864,6 +897,9 @@ class Videopc extends Target {
     this.option.target.classList.add('sv-full-screen')
     this.setProgressBarStyle_()
     this.videoEvent_(EventType.FULL_SCREEN)
+    this.isFullScreen_ = true
+    // 检索插槽中的控件，找到全屏控件
+    this.setControlFullScreen_(1)
   }
 
   /**
@@ -883,6 +919,48 @@ class Videopc extends Target {
     this.option.target.classList.remove('sv-full-screen')
     this.setProgressBarStyle_()
     this.videoEvent_(EventType.CANCEL_FULL_SCREEN)
+    this.isFullScreen_ = false
+    // 检索插槽中的控件，找到全屏控件
+    this.setControlFullScreen_(0)
+  }
+
+  /**
+   * @description 检索插槽中的控件，找到全屏控件
+   *
+   * @param {number} [type=0]
+   * @memberof Videopc
+   */
+  setControlFullScreen_ (type = 0) {
+    this.option.leftControls.forEach(item => {
+      if (item.type_ === 'fullScreenMenu') {
+        this.setFullScreenMenu(type, item)
+      }
+    })
+    this.option.rightControls.forEach(item => {
+      if (item.type_ === 'fullScreenMenu') {
+        this.setFullScreenMenu(type, item)
+      }
+    })
+    this.option.centerControls.forEach(item => {
+      if (item.type_ === 'fullScreenMenu') {
+        this.setFullScreenMenu(type, item)
+      }
+    })
+  }
+
+  /**
+   * @description 设置全屏控件按钮
+   *
+   * @memberof Videopc
+   */
+  setFullScreenMenu (type, control) {
+    if (type === 0) { // 退出
+      control.fullScreenBtn_.innerHTML = '&#xe6cc;'
+      control.isFull_ = false
+    } else {
+      control.fullScreenBtn_.innerHTML = '&#xe71f;'
+      control.isFull_ = true
+    }
   }
 
   /**
@@ -987,14 +1065,14 @@ class Videopc extends Target {
       try {
         this.option.target.removeChild(barrage)
       } catch (error) {
-        
+        // nothing
       }
     }
     if (barrages.length > 0) {
       try {
         this.clearBarrages_()
       } catch (error) {
-        
+        // nothing
       }
     }
   }
@@ -1018,11 +1096,39 @@ class Videopc extends Target {
   }
 
   /**
+   * @description 监听是否全屏
+   *
+   * @memberof Videopc
+   */
+  isFull () {
+    //判断浏览器是否处于全屏状态 （需要考虑兼容问题）
+    //火狐浏览器
+    let isFull = document.mozFullScreen||
+		document.fullScreen ||
+		//谷歌浏览器及Webkit内核浏览器
+		document.webkitIsFullScreen ||
+		document.webkitRequestFullScreen ||
+		document.mozRequestFullScreen ||
+		document.msFullscreenEnabled
+    if (isFull === undefined) {
+      isFull = false
+    }
+    return isFull
+  }
+
+  /**
    * @description
    * 事件监听
    * @memberof Videopc
    */
   listenerEvents_ () {
+    // 监听是否全屏
+    window.onresize = () => {
+      if (!this.isFull()){
+        // 退出全屏后要执行的动作
+        this.cancelFullScreen_()
+      }
+    }
     // 开始播放
     this.eventFn_('play', EventType.PLAY)
     // 正在请求数据
@@ -1076,7 +1182,7 @@ class Videopc extends Target {
         this.rollBarrage_ = false
         this.svgPause_.classList.remove('hide')
         break
-      case  EventType.LOADED_METADATA:
+      case EventType.LOADED_METADATA:
         this.hideLoad_()
         break
       case EventType.WAITING:
@@ -1091,6 +1197,7 @@ class Videopc extends Target {
         this.isPip_ = false
         break
       default:
+
         break
       }
       this.videoEvent_(customEvent)

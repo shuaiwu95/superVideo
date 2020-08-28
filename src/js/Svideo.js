@@ -6,6 +6,7 @@ import VideoSource from './source/VideoSource'
 import Control from './control/Control'
 import eventType from './events/EventType'
 import isPc from './util/isPc'
+import sourceType from './source/sourceType'
 
 /**
  * @classdesc
@@ -148,9 +149,14 @@ class Svideo extends Target{
    * @memberof Svideo
    */
   setPath (path) {
-    this.video_.video_.src = path
-    this.video_.initTimes_()
-    this.video_.clearBarrages_()
+    const thatVideo = this.video_
+    if (thatVideo.source_.option.blob && thatVideo.sourceType === sourceType.MP4) {
+      thatVideo.xhrBlob(path)
+    } else {
+      thatVideo.video_.src = path
+    }
+    thatVideo.initTimes_()
+    thatVideo.clearBarrages_()
   }
 
   /**
