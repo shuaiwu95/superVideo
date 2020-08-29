@@ -16,7 +16,7 @@ npm run build
 将打包后的dist文件中的JS和CSS文件引入项目即可
 您也可以将examples中的文件直接拿来使用，作者会长久维护此案例文件<br/>
 
-**基础用法**<br/>
+**build包用法**<br/>
 引入资源
 ```
 <link href="main-css.css" rel="stylesheet"></head>

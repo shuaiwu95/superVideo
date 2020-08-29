@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+/* 该入口用于npm包 */
 // 类库入口文件
 import Svideo from './Svideo'
 import VideoSource from './source/VideoSource'
@@ -12,7 +12,7 @@ import DbspeenControl from './control/Dbspeed'
 import BarrageControl from './control/BarrageControl'
 
 // 导出类库
-export default {
+export {
   Svideo,
   Barrage,
   VideoSource,
