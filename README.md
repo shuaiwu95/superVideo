@@ -1,4 +1,4 @@
-![image](https://img.shields.io/npm/v/supervideo)
+[![image](https://img.shields.io/npm/v/supervideo)](https://www.npmjs.com/package/supervideo)
 ## SuperVideo - H5视频播放插件 ##
 **简介**
 
