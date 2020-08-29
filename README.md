@@ -4,8 +4,9 @@
 
 SuperVideo是一款基于 H5 video 开发的视频播放插件。
 该项目用ES6语法编写,webpack打包。
-SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为 SuperVideo 1.0.7测试版本，当前api是不稳定的并有可能随时发生变化。
-
+SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为测试版本，当前api是不稳定的并有可能随时发生变化。
+**NPM**<br/>
+npm i supervideo --save
 **示例**<br/>
 [DEMO][https://hulalalalala.github.io/superVideo/examples/index.html]
 
@@ -38,6 +39,7 @@ npm run build
       // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8) flv: 可播放flv视频
       // src: 视频路径，可以是本地路径亦可是网络路径
       type: 'mp4',
+      // blob: false, // 是否blob加密MP4视频
       src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
     })
 
@@ -61,7 +63,65 @@ npm run build
     //初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
     var video = new Super.Svideo('videoContainer', config)
 ```
+**npm包用法**<br/>
+```
+    import { Svideo, NextControl, VideoSource, DbspeenControl, FullScreenControl, BarrageControl } from 'supervideo'
+    // 实例化一个“下一个”按钮控件
+    const nextControl = new NextControl()
+    // 实例化一个倍速控件
+    const Dbspeen = new DbspeenControl()
+    // 实例化一个弹幕输入框控件
+    const barrageControl = new BarrageControl()
+    // 实例化一个全屏按钮控件
+    const fullScreenControl = new FullScreenControl()
+    // 实例化视频播放资源
+    const source = new VideoSource({
+      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8) flv: 可播放flv视频
+      // src: 视频路径，可以是本地路径亦可是网络路径
+      type: 'mp4',
+      // blob: false, // 是否blob加密MP4视频
+      src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
+    })
 
+    // /* 插件的常用配置参数 */
+    const config = {
+      // 是否自动播放（该功能受限于浏览器安全策略，可能会失效，解决思路为初始化时设置为静音，加载完毕后取消静音）
+      autoplay: false,
+      currentTime: 0, // 设置视频初始播放时间，单位为秒
+      loop: false, // 是否循环播放
+      muted: false, // 是否默认静音
+      playbackRate: 1, // 视频默认播放速度
+      poster: '', // 视频首帧图片路径
+      volume: 0.5, // 视频默认音量 0-1
+      showPictureInPicture: true, // 是否启用画中画模式按钮（>=Chrome10有效）
+      source: source, // 为视频插件设置资源
+      leftControls: [nextControl], // 在底部控件栏左侧插入 “下一个”按钮控件
+      rightControls: [Dbspeen, fullScreenControl], // 在底部控件栏左侧插入 “倍速” 控件和 “全屏” 控件
+      centerControls: [barrageControl] // 在底部控件栏中间插入 “弹幕输入控件”
+    }
+
+    // 初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
+    /* eslint-disable no-new */
+    new Svideo('videoContainer', config)
+```
+**自定义控件**<br/>
+```
+  // 编写控件
+  import { Control } from 'supervideo'
+  export default class CustomControl extends Control {
+    constructor () {
+       super()
+    }
+    create_ () {
+      // 在这里编写控件相关代码
+      // this.element_ 控件父容器，将你编写的HTML NODE加入该容器，即可正常加载到播放器
+    }
+  }
+  // 使用控件
+  new Svideo('videoContainer', {
+    rightControls: [ new CustomControl() ]
+  })
+```
 **事件监听**<br/>
 支持原生video对象的所有事件监听
 
@@ -81,6 +141,8 @@ lishuaiwu5201314@gmail.com<br/>
 
 **算法交流QQ群**<br/>
 417370175
+**如果该插件对您有帮助，请捐赠个冰棍钱以资鼓励**<br/>
+![image](https://hulalalalala.github.io/superVideo/api/alipay.jpg)
 
 
 
