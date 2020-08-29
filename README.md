@@ -1,3 +1,4 @@
+![https://img.shields.io/npm/v/supervideo]
 ## SuperVideo - H5视频播放插件 ##
 **简介**
 
