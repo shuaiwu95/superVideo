@@ -142,8 +142,9 @@ lishuaiwu5201314@gmail.com<br/>
 
 **算法交流QQ群**<br/>
 417370175
+
 **如果该插件对您有帮助，请捐赠个冰棍钱以资鼓励**<br/>
-![image](https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg)
+<img src="https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg" style="width: 300px;">
 
 
 
