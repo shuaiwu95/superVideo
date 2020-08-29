@@ -7,6 +7,7 @@ SuperVideo是一款基于 H5 video 开发的视频播放插件。
 SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为测试版本，当前api是不稳定的并有可能随时发生变化。
 **NPM**<br/>
 npm i supervideo --save
+
 **示例**<br/>
 [DEMO][https://hulalalalala.github.io/superVideo/examples/index.html]
 
@@ -142,7 +143,7 @@ lishuaiwu5201314@gmail.com<br/>
 **算法交流QQ群**<br/>
 417370175
 **如果该插件对您有帮助，请捐赠个冰棍钱以资鼓励**<br/>
-![image](https://hulalalalala.github.io/superVideo/api/alipay.jpg)
+![image](https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg)
 
 
 
