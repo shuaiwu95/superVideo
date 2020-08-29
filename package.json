@@ -1,6 +1,6 @@
 {
   "name": "supervideo",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "一款播放器插件",
   "main": "./src/js/index.js",
   "scripts": {
