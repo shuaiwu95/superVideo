@@ -144,7 +144,7 @@ lishuaiwu5201314@gmail.com<br/>
 417370175
 
 **如果该插件对您有帮助，请捐赠个冰棍钱以资鼓励**<br/>
-<img src="https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg" style="width: 300px;">
+<img src="https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg" width="300">
 
 
 
