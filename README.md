@@ -2,7 +2,7 @@
 
 ## SuperVideo - H5视频播放插件 ##
 
-[ENGLISH README][https://github.com/hulalalalala/superVideo/blob/alpha/api/README.md]
+[ENGLISH README][https://github.com/hulalalalala/superVideo/blob/master/api/README.md]
 
 **简介**
 SuperVideo是一款基于 H5 video 开发的视频播放插件。

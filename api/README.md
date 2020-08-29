@@ -2,7 +2,7 @@
 
 ## SuperVideo - H5 Video player plugin ##
 
-[中文介绍][https://github.com/hulalalalala/superVideo/blob/alpha/README.md]
+[中文介绍][https://github.com/hulalalalala/superVideo/blob/master/README.md]
 
 **Introduction**
 SuperVideo is a video playback plug-in developed based on H5 video.
