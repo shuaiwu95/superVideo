@@ -1,29 +1,27 @@
 [![image](https://img.shields.io/npm/v/supervideo)](https://www.npmjs.com/package/supervideo)
 
-## SuperVideo - H5 Video player plugin ##
+## SuperVideo - H5视频播放插件 ##
 
-[中文介绍][https://github.com/hulalalalala/superVideo/blob/master/README.md]
-
-**Introduction**
-SuperVideo is a video playback plug-in developed based on H5 video.
-The project is written in ES6 syntax and packaged with webpack.
-SuperVideo integrates most common attributes and methods of video objects, built-in common video playback controls, and also supports user-defined controls. The current version is a test version, the current api is unstable and may change at any time
+**简介**
+SuperVideo是一款基于 H5 video 开发的视频播放插件。
+该项目用ES6语法编写,webpack打包。
+SuperVideo集成了大部分video对象常用属性与方法，内置了常用的视频播放控件，也支持用户自定义控件。当前版本为测试版本，当前api是不稳定的并有可能随时发生变化。
 
 **NPM**<br/>
 npm i supervideo --save
 
-**DEMO**<br/>
-[DEMO][https://hulalalalala.github.io/superVideo/examples/index.html]
+**示例**<br/>
+[DEMO](https://hulalalalala.github.io/superVideo/examples/index.html)
 
-**API**<br/>
-[API][https://hulalalalala.github.io/superVideo/api/index.html]
+**参考文档**<br/>
+[API](https://hulalalalala.github.io/superVideo/api/index.html)
 
-**run or build**<br/>
+**安装使用**<br/>
 npm run build
-Import the JS and CSS files in the packaged dist file into the project
-You can also use the files in examples directly, the author will maintain this case file for a long time<br/>
+将打包后的dist文件中的JS和CSS文件引入项目即可
+您也可以将examples中的文件直接拿来使用，作者会长久维护此案例文件<br/>
 
-**build usage**<br/>
+**build包用法**<br/>
 引入资源
 ```
 <link href="main-css.css" rel="stylesheet"></head>
@@ -31,44 +29,44 @@ You can also use the files in examples directly, the author will maintain this c
 ```
 编写代码
 ```
-    // Instantiate a "next" button control
+    // 实例化一个“下一个”按钮控件
     var nextControl = new Super.NextControl()
-    // Instantiate a double speed control
+    // 实例化一个倍速控件
     var Dbspeen = new Super.DbspeenControl()
-    // Instantiate a barrage input box control
+    // 实例化一个弹幕输入框控件
     var BarrageControl = new Super.BarrageControl()
-    // Instantiate a full-screen button control
+    // 实例化一个全屏按钮控件
     var fullScreenControl = new Super.FullScreenControl()
-    // Instantiate video playback resources
+    // 实例化视频播放资源
     var source = new Super.VideoSource({
-      // type: Video type mp4: can play video files in common formats supported by browsers (mp4/ogg/webm) m3u8: can play live streaming video in Hls format (***.m3u8) flv: can play flv video
-      // src: Video path, it can be a local path or a network path
+      // type: 视频类型 mp4:可播放浏览器支持的常见格式的视频文件(mp4/ogg/webm) m3u8: 可播放Hls形式推流直播视频(***.m3u8) flv: 可播放flv视频
+      // src: 视频路径，可以是本地路径亦可是网络路径
       type: 'mp4',
-      // blob: false, // Whether to encrypt blob MP4 video
+      // blob: false, // 是否blob加密MP4视频
       src: 'https://blz-videos.nosdn.127.net/1/OverWatch/AnimatedShots/Overwatch_AnimatedShot_Winston_Recall.mp4'
     })
 
-    /* options */
+    /* 插件的常用配置参数 */
     var config = {
-      // Whether to play automatically (this function is limited by the browser security policy and may be invalid. The solution is to set mute when initializing, and unmute after loading)
+      // 是否自动播放（该功能受限于浏览器安全策略，可能会失效，解决思路为初始化时设置为静音，加载完毕后取消静音）
       autoplay: false,
-      currentTime: 0, // Set the initial playback time of the video, in seconds
-      loop: false, // Whether to loop
-      muted: false, // Whether to mute by default
-      playbackRate: 1, // Default video playback speed
-      poster: '', // The path of the first frame of the video
-      volume: 0.5, // Video default volume 0-1
-      showPictureInPicture: true, // Whether to enable the picture-in-picture mode button (>=Chrome10 valid)
-      source: source, // Set up resources for video plugins
-      leftControls: [nextControl], // Insert the "Next" button control on the left side of the bottom control bar
-      rightControls: [Dbspeen, fullScreenControl], // Insert the "double speed" control and "full screen" control on the left side of the bottom control bar
-      centerControls: [BarrageControl] // Insert "Barrage Input Control" in the middle of the bottom control bar
+      currentTime: 0, // 设置视频初始播放时间，单位为秒
+      loop: false, // 是否循环播放
+      muted: false, // 是否默认静音
+      playbackRate: 1, // 视频默认播放速度
+      poster: '', // 视频首帧图片路径
+      volume: 0.5, // 视频默认音量 0-1
+      showPictureInPicture: true, // 是否启用画中画模式按钮（>=Chrome10有效）
+      source: source, // 为视频插件设置资源
+      leftControls: [nextControl], // 在底部控件栏左侧插入 “下一个”按钮控件
+      rightControls: [Dbspeen, fullScreenControl], // 在底部控件栏左侧插入 “倍速” 控件和 “全屏” 控件
+      centerControls: [BarrageControl] // 在底部控件栏中间插入 “弹幕输入控件”
     }
 
-    //To initialize the plugin superVideo('videoContainer'), please correspond to the plugin container id in the html.
+    //初始化插件superVideo('videoContainer')请对应好html中的插件容器id.
     var video = new Super.Svideo('videoContainer', config)
 ```
-**npm usage**<br/>
+**npm包用法**<br/>
 ```
     import { Svideo, NextControl, VideoSource, DbspeenControl, FullScreenControl, BarrageControl } from 'supervideo'
     // 实例化一个“下一个”按钮控件
@@ -109,45 +107,45 @@ You can also use the files in examples directly, the author will maintain this c
     /* eslint-disable no-new */
     new Svideo('videoContainer', config)
 ```
-**Custom control**<br/>
+**自定义控件**<br/>
 ```
-  // Write control
+  // 编写控件
   import { Control } from 'supervideo'
   export default class CustomControl extends Control {
     constructor () {
        super()
     }
     create_ () {
-      // Write control related code here
-      // this.element_ // Control parent container, add the HTML NODE you write to the container, then it can be loaded into the player normally
+      // 在这里编写控件相关代码
+      // this.element_ 控件父容器，将你编写的HTML NODE加入该容器，即可正常加载到播放器
     }
   }
-  // Use control
+  // 使用控件
   new Svideo('videoContainer', {
     rightControls: [ new CustomControl() ]
   })
 ```
-**event**<br/>
-Support all event monitoring of native video object
+**事件监听**<br/>
+支持原生video对象的所有事件监听
 
-**thanks**<br/>
-The video decoding of superVideo's hls and flv formats all rely on hls.js and flv.js<br/>
-Thanks to the great gods who developed these two video decoding open source libraries
+**感谢**<br/>
+superVideo 的hls 和 flv 格式的视频解码全部依托于 hls.js 与 flv.js<br/>
+感谢开发这两个视频解码开源库的大神
 
-**Contact the author email**<br/>
+**联系作者**<br/>
 shuaiwu123@foxmail.com<br/>
 lishuaiwu5201314@gmail.com<br/>
 
-**SuperVideo QQ group**<br/>
+**SuperVideo交流群1**<br/>
 1127738585
 
-**H5 front-end exchange QQ group**<br/>
+**H5前端交流QQ群**<br/>
 106048926
 
-**Algorithm exchange QQ group**<br/>
+**算法交流QQ群**<br/>
 417370175
 
-**If this plugin is helpful to you, please donate a popsicle money to encourage**<br/>
+**如果该插件对您有帮助，请捐赠个冰棍钱以资鼓励**<br/>
 <img src="https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg" width="300">
 
 
