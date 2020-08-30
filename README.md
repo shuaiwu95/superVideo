@@ -1,4 +1,5 @@
 [![image](https://img.shields.io/npm/v/supervideo)](https://www.npmjs.com/package/supervideo)
+[![npm version](https://badge.fury.io/js/supervideo.svg)](https://badge.fury.io/js/supervideo)
 
 ## SuperVideo - H5 Video player plugin ##
 
