@@ -12,6 +12,10 @@ SuperVideo integrates most common attributes and methods of video objects, built
 **NPM**<br/>
 npm i supervideo --save
 
+**CDN**<br/>
+https://cdn.jsdelivr.net/gh/hulalalalala/superVideo@1.1.7/examples/css/main-css.css
+https://cdn.jsdelivr.net/gh/hulalalalala/superVideo@1.1.7/examples/superVideo.js
+
 **DEMO**<br/>
 [DEMO](https://hulalalalala.github.io/superVideo/examples/index.html)
 
