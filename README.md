@@ -152,7 +152,6 @@ lishuaiwu5201314@gmail.com<br/>
 417370175
 
 **If this plugin is helpful to you, please donate a popsicle money to encourage**<br/>
-<img src="https://github.com/hulalalalala/superVideo/blob/alpha/api/alipay.jpg" width="300">
 
 
 
